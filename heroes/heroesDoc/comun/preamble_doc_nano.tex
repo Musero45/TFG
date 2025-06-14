@@ -1,0 +1,144 @@
+\usepackage[english]{babel}
+\usepackage{indentfirst}
+\usepackage[T1]{fontenc}
+\usepackage[latin9]{inputenc}
+\usepackage{nomencl}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{subfigure}
+\usepackage{float}
+
+%% ----------------------------------------------------------------------------
+%% Defines the desired margins in the text
+%% ----------------------------------------------------------------------------
+\newlength{\margin}
+\setlength{\margin}{2.5cm}
+
+\setlength{\oddsidemargin}{\margin}
+\setlength{\evensidemargin}{\margin}
+\setlength{\textwidth}{\paperwidth}
+\addtolength{\textwidth}{-\oddsidemargin}
+\addtolength{\textwidth}{-\evensidemargin}
+
+\setlength{\headsep}{\footskip}
+\addtolength{\headsep}{-\headheight}
+\addtolength{\headsep}{0.5cm}
+
+\setlength{\topmargin}{\margin}
+\setlength{\textheight}{\paperheight}
+\addtolength{\textheight}{-\topmargin}
+\addtolength{\textheight}{-\headheight}
+\addtolength{\textheight}{-\headsep}
+\addtolength{\textheight}{-\margin}
+\addtolength{\textheight}{-\footskip}
+
+\addtolength{\topmargin}{-1in}
+\addtolength{\oddsidemargin}{-1in}
+\addtolength{\evensidemargin}{-1in}
+
+%% ----------------------------------------------------------------------------
+%% Modifies some text metrics
+%% ----------------------------------------------------------------------------
+\renewcommand{\textfraction}{0.10}
+\renewcommand{\topfraction}{0.90}
+\renewcommand{\bottomfraction}{0.90}
+
+%% ----------------------------------------------------------------------------
+%% Defines commands for the titlepage and constructs the document name
+%% ----------------------------------------------------------------------------
+\newcommand{\foot}[1]{\newcommand{\@foot}{#1}}
+\newcommand{\heading}[1]{\newcommand{\@heading}{#1}}
+\newcommand{\city}[1]{\newcommand{\@city}{#1}}
+\renewcommand{\month}[1]{\newcommand{\@month}{#1}}
+\renewcommand{\year}[1]{\newcommand{\@year}{#1}}
+
+%% ----------------------------------------------------------------------------
+%% Defines spanish as the default language
+%% ----------------------------------------------------------------------------
+%%\RequirePackage[spanish]{babel}
+
+%% ----------------------------------------------------------------------------
+%% Modifies the header and foot styles of the pages
+%% ----------------------------------------------------------------------------
+\usepackage{fancyhdr}
+\setlength{\headheight}{15.72pt}
+
+\fancypagestyle{NanoStyle}{%
+  \fancyhf{}%
+  \renewcommand{\headrulewidth}{0.4pt}%
+  \renewcommand{\footrulewidth}{0.4pt}%
+  \fancyhead[LE]{\slshape\nouppercase{\leftmark}}%
+  \fancyhead[RO]{\slshape\nouppercase{\rightmark}}%
+  \fancyhead[RE,LO]{\@heading}%
+  \fancyfoot[RE,LO]{\@foot}%
+  \fancyfoot[LE,RO]{\thepage}}
+
+\fancypagestyle{plain}{%
+  \fancyhf{}%
+  \renewcommand{\headrulewidth}{0pt}%
+  \fancyfoot[LE,RO]{\thepage}}
+
+\pagestyle{NanoStyle}
+
+\renewcommand{\sectionmark}[1]{\markboth{\ifnum \thesection > 0 \thesection.\ \fi#1}%
+                                        {\ifnum \thesection > 0 \thesection.\ \fi#1}}
+\renewcommand{\subsectionmark}[1]{}
+
+%% ----------------------------------------------------------------------------
+%% Modifies the caption style
+%% ----------------------------------------------------------------------------
+\usepackage{caption}
+
+\captionsetup{font=small,labelfont=bf}
+
+%% ----------------------------------------------------------------------------
+%% Redefines the \maketitle command
+%% ----------------------------------------------------------------------------
+
+\renewcommand{\maketitle}{%
+  \begin{titlepage}%
+    \renewcommand{\baselinestretch}{1.20} \normalsize%
+    \begin{center}%
+      {\LARGE \textbf{\@title}\\}%
+      \vfill
+      \includegraphics[width=0.65\textwidth]{portada}%
+      \vfill
+      {\large \bfseries \@author\\}%
+      \vfill
+      {\@city, \@month \, \@year \\}%
+    \end{center}%
+  \end{titlepage}%
+  }
+
+%% ----------------------------------------------------------------------------
+%% Adds the References to the Table of Contents
+%% ----------------------------------------------------------------------------
+%\let\OLDtableofcontents=\tableofcontents
+%\renewcommand{\tableofcontents}{%
+%  \addcontentsline{toc}{section}{\contentsname}%
+%  \OLDtableofcontents%
+%  }
+
+\newenvironment{resumen}{%
+  \section*{Resumen}%
+  \addcontentsline{toc}{section}{Resumen}%
+  \sectionmark{Resumen}%
+  }
+
+\usepackage[nottoc]{tocbibind}
+\input{../../comun/math.tex}
+
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=black,
+  filecolor=black,
+  citecolor=black,
+  pdftitle={Heroes},
+  pdfsubject={},
+  pdfauthor={\'{A}lvaro Cuerva, \'{O}scar L\'{o}pez, Mariano Rubio},
+  pdfkeywords={},
+  bookmarksopen=true
+}

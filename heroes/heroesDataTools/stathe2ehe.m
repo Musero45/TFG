@@ -1,0 +1,136 @@
+function energyHe = stathe2ehe(atmosphere,stathe)
+% STATHE2EHE Transforms a statistical helicopter into a energy helicopter
+
+
+kappa     = stathe.energyEstimations.kappa;
+K         = stathe.energyEstimations.K;
+cd0       = stathe.energyEstimations.cd0;
+f         = stathe.energyEstimations.f;
+eta_ra    = stathe.energyEstimations.eta_ra;
+etaTrp    = stathe.energyEstimations.etaTrp;
+etaTra    = stathe.energyEstimations.etaTra;
+
+% Define label
+label = stathe.id;
+
+% Obtain main rotor data from statistical helicopter 
+R         = stathe.MainRotor.R;
+b         = stathe.MainRotor.b;
+c         = stathe.MainRotor.c;
+OmegaRAD  = stathe.MainRotor.OmegaRAD;
+
+% main rotor definition
+mainRotor = struct(...
+            'class','rotor',...
+            'id',label,...
+            'eta',0.06,... % FIXME
+            'R',R,... 
+            'b',b,...
+            'cldata',[5.73 0],...% 
+            'cddata',[0.263 0.0 0.01],...% my own
+            'profile',@cl1cd2,...
+            'Omega',OmegaRAD,... 
+            'c',c, ... 
+            'kappa',kappa,... 
+            'K',K,...
+            'cd0', cd0...
+);
+
+
+% Obtain tail rotor data from statistical helicopter 
+R         = stathe.TailRotor.R;
+b         = stathe.TailRotor.b;
+c         = stathe.TailRotor.c;
+OmegaRAD  = stathe.TailRotor.OmegaRAD;
+
+% tail rotor definition
+tailRotor = struct(...
+            'class','rotor',...
+            'id',label,...
+            'eta',eta_ra,... % FIXME
+            'R',R,...
+            'b',b,...
+            'cldata',[5.73 0],...
+            'cddata',[0.0 0.0 0.01],...
+            'Omega',OmegaRAD,...
+            'c',c, ...
+            'kappa',kappa,...
+            'K',K,...
+            'cd0', cd0 ...
+);
+
+
+% fuselage definition
+fuselage   = struct(...
+            'class','fuselage',...
+            'id',label,...
+             'f',f ...% equivalent flat plate area [m^2] S*Cd Modificar con Sbody
+);
+
+
+
+
+% transmission definition
+transmission = struct(...
+            'class','transmission',...
+            'id',label,...
+            'etaTra',etaTra,... %p?rdidas de trans rotor antipar
+            'etaTrp',etaTrp ...% princial
+);
+
+% Maximun transmission power
+Pmt                 = stathe.Performances.TakeOffTransmissionRating;
+
+% It seems that the next line was a missinterpretation of Rand paper and 
+% the number of engines has not nothing to do with Pmt
+% Pmt                 = stathe.Performances.TakeOffTransmissionRating* ...
+%                       stathe.Engine.numEngines;
+fPmt                = @(h) Pmt*ones(size(h));
+transmission.fPmt   = fPmt;
+transmission.Pmt    = Pmt;
+
+% FIXME discuss about this point
+[etaMrp,etaMra,etaM] = getEtaM(transmission,eta_ra);
+transmission.etaMrp  = etaMrp;
+transmission.etaMra  = etaMra;
+transmission.etaM    = etaM;
+
+% Weights
+weights.MTOW = stathe.Weights.MTOW;
+weights.OEW  = stathe.Weights.emptyWeight;
+weights.MPL  = stathe.Weights.Wpl;
+weights.MFW  = stathe.Weights.fuelValue;
+
+% helicopter definition
+% aproximation rotor distance
+x_tr         = stathe.Dimensions.tailRotorArm;
+
+% The following two statements should be removed because W and Mf are 
+% no longer be setup in this way, now mass fuel and gross weight are flight
+% condition variables
+W            = stathe.Weights.MTOW;
+Mf           = stathe.Weights.fuelValue/atmosphere.g;
+
+
+
+% Get available power taken into account transmission power limitation
+availablePower = engine_transmission2availablePower(stathe.Engine,transmission);
+
+he  = struct(...
+      'class','ehe', ...
+      'id',label,...
+      'mainRotor',mainRotor,...
+      'tailRotor',tailRotor,...
+      'engine',stathe.Engine,... 
+      'fuselage',fuselage, ...
+      'transmission',transmission,...
+      'weights',weights,...
+      'availablePower',availablePower,...
+      'W',W,...  % N
+      'Mf',Mf,...% kg
+      'x_tr',x_tr...
+);
+
+
+% atmosphere seems not very clear that it is convenient to be input FIXME
+energyHe      = addCharacteristic2he(he,atmosphere);

@@ -1,0 +1,9 @@
+function cmx = CMXF(alpha_F,beta_F)
+
+%SACADA DE LA SIMPLIFICACION DEL PADFIELD
+%ESTA NO LA ENCUENTRO
+
+cmx = 0;
+
+
+end

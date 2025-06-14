@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<demos>
+    <name>heroes</name>
+    <type>toolbox</type>
+    <icon>HelpIcon.DEMOS</icon>
+    <description isCdata="no">
+
+    <p>heroes Toolbox provides a computational environment for analising 
+       and designing helicopters.</p>
+    </description>
+    <website><a href="http://moodle.upm.es/titulaciones/oficiales/course/view.php?id=2310">UPM-heroes moodle site</a></website>
+
+    <demosection>
+        <label>International Standard Atmosphere</label>
+        <demoitem>
+            <label>Using ISA data type</label>
+            <type>M-file</type>
+            <source>demoISA</source>
+        </demoitem>
+    </demosection>
+   
+    <demosection>
+        <label>Helicopter performance by the energy method</label>
+        <demoitem>
+            <label>Get Excess Power </label>
+            <type>M-file</type>
+            <source>demoGetExcessPower</source>
+        </demoitem>
+        <demoitem>
+            <label>Parameter analysis of energy helicopters.</label>
+            <type>M-file</type>
+            <source>demoParameterEnergyAnalysis</source>
+        </demoitem>
+        <demoitem>
+            <label>Powered flight condition. Autorotation example</label>
+            <type>M-file</type>
+            <source>demoAutorotationCurve</source>
+        </demoitem>
+    </demosection>
+
+    <demosection>
+        <label>Rotor Aeromechanic Analysis</label>
+        <demoitem>
+            <label>Aeromechanics of hovering flight condition </label>
+            <type>M-file</type>
+            <source>demoHoverAeromechanics</source>
+        </demoitem>
+    </demosection>
+
+    <demosection>
+        <label>Rigid Helicopter Trim and Stabillity Analysis</label>
+        <demoitem>
+            <label>Trim and Stability analysis of leveled forward flight </label>
+            <type>M-file</type>
+            <source>demoHelicopterTrimStability</source>
+        </demoitem>
+        <demoitem>
+            <label>Parameter analysis of rigid helicopters influence on trim </label>
+            <type>M-file</type>
+            <source>demoHelicopterTrimStability</source>
+        </demoitem>
+    </demosection>
+
+    <demosection>
+        <label>Helicopter Missions</label>
+        <demoitem>
+            <label>Mission</label>
+            <type>M-file</type>
+            <source>demoHelicopterMissions</source>
+        </demoitem>
+    </demosection>
+    <demosection>
+        <label>Helicopter Flight Dynamics</label>
+        <demoitem>
+            <label>Simulation of helicopter dynamic response to control input</label>
+            <type>M-file</type>
+            <source>demoFlightDynamics</source>
+        </demoitem>
+    </demosection>
+</demos>

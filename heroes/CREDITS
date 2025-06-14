@@ -1,0 +1,101 @@
+===========================================================================
+List of people to be contacted and asked for permission
+
+Mariano Rubio Rubio mrrubio @ ing.uc3m.es
+Cesar Garci?a Lozano cesargl89@gmail.com
+Hector Fernandez Dotu hector.f.dotu@gmail.com
+Irene irene.vsuarez@alumnos.upm.es
+Daniel Perez Acosta daniel.pacosta@alumnos.upm.es danaco91@gmail.com
+Iker Camiruaga ikercamiruaga@gmail.com
+Arturo Santamaria arturo.santamaria.perez@alumnos.upm.es
+Francico J. Ruiz Fernandez  francisco.ruiz.fernandez@alumnos.upm.es
+Nicolas Calvo Pasaron n.cpasaron@alumnos.upm.es
+
+===========================================================================
+Text to be sent by contributors and stored to keep track of authorship
+I hereby grant permission to license my contributions to Heroes under the Gnu
+General Public Licence, version 3 or later.
+
+===========================================================================
+The next text should be added to each *.m file (DISCUSS)
+
+This file is part of Heroes, an helicopter toolbox.
+Licence details can be found in the file COPYING.
+
+===========================================================================
+SKIP THIS NAMES ALONG THE CODE
+Authors: Sergio Esteban, Nano Rubio
+Author: Alejandro Redondo alex.redondo.moral@gmail.com
+Author: Francisco Cristobal Serrano fco.serrano.guzman@alumnos.upm.es
+Author: Sergio Nadal s.nadal@alumnos.upm.es
+Author: Jose Garcia Garrido jose.garcia.garrido@alumnos.upm.es
+Author: Ivan Marq ivanmarq@gmail.com
+Author: Lucia Sanchez lucia.sanchez.iglesias@alumnos.upm.es
+Author: Raquel Martin raquel.martin.sanroman@alumnos.upm.es
+Author: Jose Garcia Garrido jose.garcia.garrido@alumnos.upm.es
+Author: Francisco Cristobal Serrano fco.serrano.guzman@alumnos.upm.es
+Author: Alvaro Moreno alvaro.msacristan@alumnos.upm.es
+Author: Maria Sanz mariass0@alumnos.upm.es
+Author: Marina Hierro marina.hierro.tobar@alumnos.upm.es
+Author: Alejandro Redondo alex.redondo.moral@gmail.com
+Author: Rocio Macarro rocio.martin.macarro@alumnos.upm.es
+Sergio Fernandez 
+
+% Author: John D'Errico
+./common/derivest.m
+% Author: John D'Errico
+./common/eigenshuffle.m
+% Author     ir. Peter W.A. Zegelaar
+./common/ifouriert.m
+% Author(s): A. Prasad
+./common/digitize2.m
+% Author: John D'Errico
+./common/jacobianest.m
+% Author: John D'Errico
+./heToolBoxOld/equations/derivest.m
+
+===========================================================================
+Some statistics about files in order to add license information
+Current number of files, directories etc
+
+Number of total entities(files and directories): 3237
+Number of directories: 338
+Number of files: 2899
+Hidden .svn directory contributes with 1753 files and 259 directories
+Out of .svn directory we have 1145 files  80 directories 
+find .  -path ./.svn -prune -o -type f -print | wc -l (=1145)
+find .  -path ./.svn -prune -o -type d -print | wc -l (=80)
+
+Number of m files: 873
+Number of mat files: 13
+Number of png files: 178
+Number of pdf files: 14
+Number of lyx files: 6
+Number of html files: 20
+Number of xml files: 3
+Number of mapple worksheet files: 15
+Number of mapple autosave files: 1
+Number of dat files: 5
+Number of files without extension: 3
+Number of *~ files: 1
+Number of bib files: 1
+Number of tex files: 7
+Number of cfs files: 2
+Number of txt files: 2
+
+find .  -path ./.svn -prune -o -type f -name "*.m" -print | wc -l 
+find .  -path ./.svn -prune -o -type f -name "*.mat" -print | wc -l 
+find .  -path ./.svn -prune -o -type f -name "*.png" -print | wc -l 
+find .  -path ./.svn -prune -o -type f -name "*.pdf" -print | wc -l 
+find .  -path ./.svn -prune -o -type f -name "*.lyx" -print | wc -l 
+find .  -path ./.svn -prune -o -type f -name "*.html" -print | wc -l
+find .  -path ./.svn -prune -o -type f -name "*.xml" -print | wc -l 
+find .  -path ./.svn -prune -o -type f -name "*.mw" -print | wc -l 
+find .  -path ./.svn -prune -o -type f -name "*.sav" -print | wc -l
+find .  -path ./.svn -prune -o -type f -name "*.dat" -print | wc -l
+find .  -path ./.svn -prune -o -type f -not -name "*.*" -print | wc -l
+find .  -path ./.svn -prune -o -type f -name "*~" -print | wc -l
+find .  -path ./.svn -prune -o -type f -name "*.bib" -print | wc -l
+find .  -path ./.svn -prune -o -type f -name "*.tex" -print | wc -l
+find .  -path ./.svn -prune -o -type f -name "*.cfs" -print | wc -l
+find .  -path ./.svn -prune -o -type f -name "*.txt" -print | wc -l

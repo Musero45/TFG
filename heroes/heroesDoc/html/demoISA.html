@@ -1,0 +1,207 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>demoISA</title><meta name="generator" content="MATLAB 7.14"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-03-31"><meta name="DC.source" content="demoISA.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, tt, code { font-size:12px; }
+pre { margin:0px 0px 20px; }
+pre.error { color:red; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">Using the International Standard Atmosphere</a></li><li><a href="#2">Assign an ISA data type to a variable</a></li><li><a href="#5">Using plotISA</a></li></ul></div><h2>Using the International Standard Atmosphere<a name="1"></a></h2><p>This demo shows how to use the International Standard Atmosphere implementation of Heroes toolbox.</p><p>Please note one implicit rule of heroes is that each physic variable is computed using the Internation System of Units.</p><pre class="codeinput">close <span class="string">all</span>
+setPlot
+</pre><h2>Assign an ISA data type to a variable<a name="2"></a></h2><p>The first step in most of the heroes computation is to assign an ISA data type to a variable. The next statement assigns a +0 ISA to the atm0 variable. After the assignment we can look at the variable and check that the variable atm0 is a structure with fields which most of them are function handles and constants that define the ISA.</p><pre class="codeinput">atm0       = getISA;
+</pre><p>We can plot the pressure variation of the ISA with the geopotential altitude z as follows. First we define a vector of altitudes from sea level to 12000 metersand then we use the function handle field 'pressure' to obtain the pressure. Finally, we plot the pressure in kPa  as a function of the geopotential altitude.</p><pre class="codeinput">zp         = linspace(0,12e3,101);
+p          = atm0.pressure(zp);
+figure(1)
+plot(p*1e-3,zp); hold <span class="string">on</span>;
+xlabel(<span class="string">'$$p$$ [kPa]'</span>); ylabel(<span class="string">'$$z$$ [m]'</span>); grid <span class="string">on</span>;
+</pre><img vspace="5" hspace="5" src="demoISA_01.png" alt=""> <p>We can proceed analogously using the temperature function handle field to plot the temperature variation and check that the temperature gradient is contant at the troposphere and changes at the tropopause, i.e. 11000 meters, just to be constant. For this example we plot the temperature in Celsius degrees.</p><pre class="codeinput">T          = atm0.temperature(zp);
+figure(3)
+plot(T-273,zp); hold <span class="string">on</span>;
+xlabel(<span class="string">'$$T$$ [$$^o$$]'</span>); ylabel(<span class="string">'$$z$$ [m]'</span>); grid <span class="string">on</span>;
+</pre><img vspace="5" hspace="5" src="demoISA_02.png" alt=""> <h2>Using plotISA<a name="5"></a></h2><p>Most of heroes data types have its own plot function to ease the plot task. ISA data type has its own plot function which is called plotISA. This function helps to plot the variables of the ISA. For instance, the next statement plots the atm0 instance of ISA using as legend for the plots the label 'ISA+0'</p><pre class="codeinput">plotISA(atm0,{<span class="string">'ISA+0'</span>});
+</pre><img vspace="5" hspace="5" src="demoISA_03.png" alt=""> <img vspace="5" hspace="5" src="demoISA_04.png" alt=""> <img vspace="5" hspace="5" src="demoISA_05.png" alt=""> <img vspace="5" hspace="5" src="demoISA_06.png" alt=""> <img vspace="5" hspace="5" src="demoISA_07.png" alt=""> <img vspace="5" hspace="5" src="demoISA_08.png" alt=""> <img vspace="5" hspace="5" src="demoISA_09.png" alt=""> <p>As it can be seen plotISA plots seven variables, that is pressure, density, temperature, speed of sound and the pressure, density and temperature ratios with respect to their sea level counterparts as functions of geopotential altitude from sea level to 20 km. This behavior is controlled by the options machinery of heroes. In fact there exist two functions that control the default behaviour of plotISA and they are setHeroesPlotOptions which controls overall heroes plot options and setISAPlotOptions which control the particular behaviour of plotISA. We can override the default options using a pair of additional values, that is the property name to be changed and the new value to be input.</p><p>For instance, we would like to change the value of altitude used at the plots and we need to show the variation with geopotential altitude between 1000 meters and 2000 meters. We should override the property name of hspan, so the next statement plots as before but for a geopotential altitude variation between 1000 and 2000 meters.</p><pre class="codeinput">hi         = linspace(1000,2000,31);
+plotISA(atm0,{<span class="string">'ISA+0'</span>},<span class="string">'hspan'</span>,hi);
+</pre><img vspace="5" hspace="5" src="demoISA_10.png" alt=""> <img vspace="5" hspace="5" src="demoISA_11.png" alt=""> <img vspace="5" hspace="5" src="demoISA_12.png" alt=""> <img vspace="5" hspace="5" src="demoISA_13.png" alt=""> <img vspace="5" hspace="5" src="demoISA_14.png" alt=""> <img vspace="5" hspace="5" src="demoISA_15.png" alt=""> <img vspace="5" hspace="5" src="demoISA_16.png" alt=""> <p>Another very important property to be changed is the defaultVars property which setups the list of fieldnames to be plotted. For the plotISA case the list of default fieldnames contains: pressure, temperature, density, soundSpeed, sigma, delta and theta. Now we would like to plot only the nondimensional functions of density, pressure and temperature ratios. To do so, we should change the defaultVars fieldname and set as the new value an axis data type structure using the function getaxds. Then, first we should define the new set of independent variables to be plot using getaxds. The input arguments of getaxds are first the cell of fieldnames to be plotted, second the cell of labels and third the vector of scale factors to multiply the original data which is in the international unit system.</p><pre class="codeinput">azds       = getaxds({<span class="string">'sigma'</span>,<span class="string">'delta'</span>,<span class="string">'theta'</span>},<span class="keyword">...</span>
+                     {<span class="string">'$$\sigma$$ [-]'</span>,<span class="string">'$$\delta$$ [-]'</span>,<span class="string">'$$\theta$$ [-]'</span>},<span class="keyword">...</span>
+                     [1,1,1]);
+plotISA(atm0,{<span class="string">'ISA+0'</span>},<span class="string">'defaultVars'</span>,azds);
+</pre><img vspace="5" hspace="5" src="demoISA_17.png" alt=""> <img vspace="5" hspace="5" src="demoISA_18.png" alt=""> <img vspace="5" hspace="5" src="demoISA_19.png" alt=""> <p>plotISA not only plots one instance of an ISA data type but also cells of ISA data types. We can define other ISA data types by specifying the the sea level temperature. To do so, we input the increment of temperature with respect to the standard value of 288 K as an argument of the constructor getISA. That is, for specifying an ISA+20 and ISA-20 atmospheres, we are specifying that the temperature at sea level are 298K and 278K respectively, we use the next two statements</p><pre class="codeinput">atm20p     = getISA(20);
+atm20m     = getISA(-20);
+</pre><p>Now we are interested in plotting the three ISA data types defined in this demo, that is atm0, atm10p and atm10m variables. The plotISA function is able to plot cells of ISA data types. Therefore, to compare the three atmospheres we should define a cell of ISA data. We can use plotISA by specifying a legend cell of three elements to denote each of the atmospheres. For the example shown here, we also override the default variables and we just plot the temperature value.</p><pre class="codeinput">atm        = {atm0,atm20p,atm20m};
+leg        = {<span class="string">'ISA+0'</span>,<span class="string">'ISA+20'</span>,<span class="string">'ISA-20'</span>};
+azds       = getaxds({<span class="string">'temperature'</span>},<span class="keyword">...</span>
+                     {<span class="string">'$$T$$ [K]'</span>},<span class="keyword">...</span>
+                     1);
+plotISA(atm,leg,<span class="string">'defaultVars'</span>,azds);
+</pre><img vspace="5" hspace="5" src="demoISA_20.png" alt=""> <p class="footer"><br>
+      Published with MATLAB&reg; 7.14<br></p></div><!--
+##### SOURCE BEGIN #####
+%% Using the International Standard Atmosphere 
+% This demo shows how to use the International Standard Atmosphere
+% implementation of Heroes toolbox. 
+%
+% Please note one implicit rule of heroes is that each physic variable is
+% computed using the Internation System of Units.
+
+close all
+setPlot
+
+%% Assign an ISA data type to a variable
+% The first step in most of the heroes computation is to assign an ISA data
+% type to a variable. The next statement assigns a +0 ISA to the atm0
+% variable. After the assignment we can look at the variable and check that
+% the variable atm0 is a structure with fields which most of them are
+% function handles and constants that define the ISA. 
+atm0       = getISA;
+
+%%
+% We can plot the pressure variation of the ISA with the geopotential
+% altitude z as follows. First we define a vector of altitudes from sea 
+% level to 12000 metersand then we use the function handle field 
+% 'pressure' to obtain the pressure. Finally, we plot the pressure in kPa
+%  as a function of the geopotential altitude. 
+zp         = linspace(0,12e3,101);
+p          = atm0.pressure(zp);
+figure(1)
+plot(p*1e-3,zp); hold on;
+xlabel('$$p$$ [kPa]'); ylabel('$$z$$ [m]'); grid on;
+
+%% 
+% We can proceed analogously using the temperature function handle field 
+% to plot the temperature variation and check that the temperature 
+% gradient is contant at the troposphere and changes at the tropopause,
+% i.e. 11000 meters, just to be constant. For this example we
+% plot the temperature in Celsius degrees.
+T          = atm0.temperature(zp);
+figure(3)
+plot(T-273,zp); hold on;
+xlabel('$$T$$ [$$^o$$]'); ylabel('$$z$$ [m]'); grid on;
+
+
+%% Using plotISA
+% Most of heroes data types have its own plot function to ease the plot
+% task. ISA data type has its own plot function which is called plotISA.
+% This function helps to plot the variables of the ISA. For instance, the 
+% next statement plots the atm0 instance of ISA using as legend for the
+% plots the label 'ISA+0'
+plotISA(atm0,{'ISA+0'});
+
+
+%%
+% As it can be seen plotISA plots seven variables, that is pressure,
+% density, temperature, speed of sound and the pressure, density and
+% temperature ratios with respect to their sea level counterparts as
+% functions of geopotential altitude from sea level to 20 km. This
+% behavior is controlled by the options machinery of heroes. In fact there
+% exist two functions that control the default behaviour of plotISA and
+% they are setHeroesPlotOptions which controls overall heroes plot options
+% and setISAPlotOptions which control the particular behaviour of
+% plotISA. We can override the default options using a pair of additional
+% values, that is the property name to be changed and the new value to be
+% input. 
+%
+% For instance, we would like to change the value of altitude used at the
+% plots and we need to show the variation with geopotential altitude 
+% between 1000 meters and 2000 meters. We should override the property 
+% name of hspan, so the next statement plots as before but for a 
+% geopotential altitude variation between 1000 and 2000 meters. 
+hi         = linspace(1000,2000,31);
+plotISA(atm0,{'ISA+0'},'hspan',hi);
+
+%%
+% Another very important property to be changed is the defaultVars property
+% which setups the list of fieldnames to be plotted. For the plotISA case
+% the list of default fieldnames contains: pressure, temperature, density,
+% soundSpeed, sigma, delta and theta. Now we would like to plot only the
+% nondimensional functions of density, pressure and temperature ratios. To
+% do so, we should change the defaultVars fieldname and set as the new
+% value an axis data type structure using the function getaxds. Then, first
+% we should define the new set of independent variables to be plot using
+% getaxds. The input arguments of getaxds are first the cell of fieldnames
+% to be plotted, second the cell of labels and third the vector of scale
+% factors to multiply the original data which is in the international unit
+% system. 
+
+azds       = getaxds({'sigma','delta','theta'},...
+                     {'$$\sigma$$ [-]','$$\delta$$ [-]','$$\theta$$ [-]'},...
+                     [1,1,1]);
+plotISA(atm0,{'ISA+0'},'defaultVars',azds);
+
+%%
+% plotISA not only plots one instance of an ISA data type but also cells of
+% ISA data types. We can define other ISA data types by specifying the 
+% the sea level temperature. To do so, we input the increment of 
+% temperature with respect to the standard value of 288 K as an 
+% argument of the constructor getISA. That is, for specifying an ISA+20 and
+% ISA-20 atmospheres, we are specifying that the temperature at sea level 
+% are 298K and 278K respectively, we use the next two statements
+atm20p     = getISA(20);
+atm20m     = getISA(-20);
+
+%%
+% Now we are interested in plotting the three ISA data types defined in 
+% this demo, that is atm0, atm10p and atm10m variables. The plotISA 
+% function is able to plot cells of ISA data types. Therefore, to compare
+% the three atmospheres we should define a cell of ISA data. We can use 
+% plotISA by specifying a legend cell of three elements to denote
+% each of the atmospheres. For the example shown here, we also override the
+% default variables and we just plot the temperature value.
+atm        = {atm0,atm20p,atm20m};
+leg        = {'ISA+0','ISA+20','ISA-20'};
+azds       = getaxds({'temperature'},...
+                     {'$$T$$ [K]'},...
+                     1);
+plotISA(atm,leg,'defaultVars',azds);
+
+
+##### SOURCE END #####
+--></body></html>

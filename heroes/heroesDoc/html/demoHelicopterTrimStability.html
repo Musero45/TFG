@@ -1,0 +1,560 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>demoHelicopterTrimStability</title><meta name="generator" content="MATLAB 7.14"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-03-31"><meta name="DC.source" content="demoHelicopterTrimStability.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, tt, code { font-size:12px; }
+pre { margin:0px 0px 20px; }
+pre.error { color:red; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">Helicopter Trim and Stabillity Analysis</a></li><li><a href="#9">How to compute trim states with different options</a></li><li><a href="#11">Linear Stability analysis</a></li><li><a href="#17">References</a></li></ul></div><h2>Helicopter Trim and Stabillity Analysis<a name="1"></a></h2><p>This demo shows how to use trim and stability functions to understand how to obtain helicopter trim state, helicopter components actions, helicopter stability derivatives, helicopter control derivatives, helicopter linear stability eigenvalues and eigenvectors.</p><pre class="codeinput">close <span class="string">all</span>
+setPlot;
+</pre><p>First we setup heroes environment by defining an ISA+0 atmosphere and a Bo105 rigid helicopter which are stored at the variables atm and he respectively.</p><pre class="codeinput">atm           = getISA;
+he            = PadfieldBo105(atm);
+</pre><p>Trim and stability default computing options are defined by the function setHeroesRigidOptions. To setup these default options just get them by using setHeroesRigidOptions. We shall explore some of this options latter in this demo. For more information regarding these default options see also setHeroesRigidOptions help documentation.</p><pre class="codeinput">options       = setHeroesRigidOptions;
+</pre><p>getNdHeTrimState is the main trim function and inputs to this function should be nondimensional helicopter and  nondimensional flight conditions To transform the physical helicopter, he, to nondimensional helicopter we use the function rigidHe2ndHe and store the nondimensional helicopter at the variable ndHe. The function rigidHe2ndHe requires as inputs the physical helicopter, the atmosphere and the altitude of computation. Thus, the nondimensional helicopter ndHe depends on the altitude, or in other words, for one physical helicopter we need to create an instance of a nondimensional helicopter for each altitude of interest.</p><pre class="codeinput">hsl            = 0;
+ndHe           = rigidHe2ndHe(he,atm,hsl);
+</pre><p>To define a flight condition we have to specify nondimensional wind and five state variables. First we setup no wind by defining a null vector of dimensions 3x1. Then we define a straight and leveled forward flight condition by specifying the nondimensional velocity modulus, VOR, the fuselage yaw angle, betaf0, to zero, the trayectory curvature, cs, set as zero as well as vertical and lateral velocities with respect ground, wTOR and vTOR. For more information about how to define flight conditions for trim and stability analysis see also getNdHeTrimState</p><pre class="codeinput">muWT          = [0; 0; 0];
+ndV           = linspace(0.001,0.25,31);
+FC            = {<span class="string">'VOR'</span>,ndV,<span class="keyword">...</span>
+                 <span class="string">'betaf0'</span>,0,<span class="keyword">...</span>
+                 <span class="string">'wTOR'</span>,0,<span class="keyword">...</span>
+                 <span class="string">'cs'</span>,0,<span class="keyword">...</span>
+                 <span class="string">'vTOR'</span>,0};
+</pre><p>To compute the nondimensional trim state just use the function getNdHeTrimState.</p><pre class="codeinput">ndts          = getNdHeTrimState(ndHe,muWT,FC,options);
+</pre><pre class="codeoutput">Solving trim...  1 of 31
+Solving trim...  2 of 31
+Solving trim...  3 of 31
+Solving trim...  4 of 31
+Solving trim...  5 of 31
+Solving trim...  6 of 31
+Solving trim...  7 of 31
+Solving trim...  8 of 31
+Solving trim...  9 of 31
+Solving trim...  10 of 31
+Solving trim...  11 of 31
+Solving trim...  12 of 31
+Solving trim...  13 of 31
+Solving trim...  14 of 31
+Solving trim...  15 of 31
+Solving trim...  16 of 31
+Solving trim...  17 of 31
+Solving trim...  18 of 31
+Solving trim...  19 of 31
+Solving trim...  20 of 31
+Solving trim...  21 of 31
+Solving trim...  22 of 31
+Solving trim...  23 of 31
+Solving trim...  24 of 31
+Solving trim...  25 of 31
+Solving trim...  26 of 31
+Solving trim...  27 of 31
+Solving trim...  28 of 31
+Solving trim...  29 of 31
+Solving trim...  30 of 31
+Solving trim...  31 of 31
+</pre><p>The nondimensional trim state output structure, ndts, contains 6 main substructures: solution, vel, residuals, flags, actions, and ndPow. Both residuals and flags substructures contain information about the quality of the solution and they should be inspected to check and debug solutions which could not be converged. Both vel and ndPow provide information about the local velocity fields at each component of the helicopter and global power consumption, respectively. For the moment being, these substructures does not have plot functions and they can only be accessed or used by other functions. The main numerical useful data is contained at solution and actions substructures. Plot functions for solution and actions trim state substructures are plotNdTrimSolution and plotActionsByElements respectively.</p><p>Because we have defined a vector of flight conditions by specifying a vector of nondimensional helicopter velocity modulus we have obtained a vector of trims states which can be readily input to trim plot functions.</p><p>First we plot the nondimensional trim state solution by using plotNdTrimSolution. By default this trim plot function plots the 42 trim state variables. Because these number of variables is too much for a demonstration we are going to plot just the euler and control angles required for flying the above flight condition. To do so, we define a z-axis by specifying these variables. The independent variable is obviously the nondimensional velocity modulus and this variable defines the x-axis. Finally and because by default plotNdTrimSolution tries to plot all the variables into one single figure we set the plot2dMode to nFigures. In this way, plotNdTrimSolution, plots each variable into a single figure.</p><pre class="codeinput">azdsTS        = getaxds(<span class="keyword">...</span>
+                {<span class="string">'Theta'</span>,<span class="string">'Phi'</span>,<span class="keyword">...</span>
+                 <span class="string">'theta0'</span>,<span class="string">'theta1C'</span>,<span class="keyword">...</span>
+                 <span class="string">'theta1S'</span>,<span class="string">'theta0tr'</span>},<span class="keyword">...</span>
+                {<span class="string">'$$\Theta$$ [$$^o$$]'</span>,<span class="string">'$$\Phi$$ [$$^o$$]'</span>,<span class="keyword">...</span>
+                 <span class="string">'$$\theta_{0}$$ [$$^o$$]'</span>,<span class="string">'$$\theta_{1C}$$ [$$^o$$]'</span>,<span class="keyword">...</span>
+                 <span class="string">'$$\theta_{1S}$$ [$$^o$$]'</span>,<span class="string">'$$\theta_{0tr}$$ [$$^o$$]'</span>},<span class="keyword">...</span>
+                 [180/pi,180/pi, <span class="keyword">...</span>
+                  180/pi,180/pi,<span class="keyword">...</span>
+                  180/pi,180/pi]<span class="keyword">...</span>
+                 );
+axds          = getaxds({<span class="string">'VOR'</span>},{<span class="string">'$$V/(\Omega R)$$ [-]'</span>},1);
+plotNdTrimSolution(ndts.solution,axds,[],<span class="keyword">...</span>
+                   <span class="string">'defaultVars'</span>,azdsTS,<span class="keyword">...</span>
+                   <span class="string">'plot2dMode'</span>,<span class="string">'nFigures'</span>);
+</pre><img vspace="5" hspace="5" src="demoHelicopterTrimStability_01.png" alt=""> <img vspace="5" hspace="5" src="demoHelicopterTrimStability_02.png" alt=""> <img vspace="5" hspace="5" src="demoHelicopterTrimStability_03.png" alt=""> <img vspace="5" hspace="5" src="demoHelicopterTrimStability_04.png" alt=""> <img vspace="5" hspace="5" src="demoHelicopterTrimStability_05.png" alt=""> <img vspace="5" hspace="5" src="demoHelicopterTrimStability_06.png" alt=""> <p>Now we plot the nondimensional actions by each element of the helicopter, i.e. main rotor (mr), tail rotor (tr), fuselage (f), left horizontal tail plane (lhtp), right horizontal tail plane (rhtp), vertical fin (vf) and weight (W). Actions are forces and moments of each helicopter component. One important difference with respect trim state is that flight condition parameters are not included in the substructure actions. Therefore function plotActionsByElements inputs not only the indepedent variable axis definition but also the independent variable values. As before, plotActionsByElements by default plots all the force and moment vector components and because it is too much information for this preliminary demonstration we set onlyto be plotted the three components of forces and moments with respect the center of gravity of the helicopter. By default these actions components are projected into the fuselage frame, i.e. body coordinate system. See also plotActionsByElements options to obtain ground coordinate system actions projections. Note that the sum of each action component by elements should be equal to zero at each helicopter velocity because of the trim condition definition.</p><pre class="codeinput">azdsACT       = getaxds({<span class="string">'CFx'</span>  <span class="string">'CFy'</span>  <span class="string">'CFz'</span> <span class="keyword">...</span>
+                       <span class="string">'CMtx'</span> <span class="string">'CMty'</span> <span class="string">'CMtz'</span>},<span class="keyword">...</span>
+                      {<span class="string">'$$C_{Fx}$$ [-]'</span> <span class="string">'$$C_{Fy}$$ [-]'</span> <span class="string">'$$C_{Fz}$$ [-]'</span> <span class="keyword">...</span>
+                       <span class="string">'$$C_{Mx}$$ [-]'</span> <span class="string">'$$C_{My}$$ [-]'</span> <span class="string">'$$C_{Mz}$$ [-]'</span>}, <span class="keyword">...</span>
+                      [1 1 1 <span class="keyword">...</span>
+                       1 1 1]);
+plotActionsByElement(ndts.actions,axds,ndV,<span class="string">'defaultVars'</span>,azdsACT);
+</pre><img vspace="5" hspace="5" src="demoHelicopterTrimStability_07.png" alt=""> <img vspace="5" hspace="5" src="demoHelicopterTrimStability_08.png" alt=""> <img vspace="5" hspace="5" src="demoHelicopterTrimStability_09.png" alt=""> <img vspace="5" hspace="5" src="demoHelicopterTrimStability_10.png" alt=""> <img vspace="5" hspace="5" src="demoHelicopterTrimStability_11.png" alt=""> <img vspace="5" hspace="5" src="demoHelicopterTrimStability_12.png" alt=""> <h2>How to compute trim states with different options<a name="9"></a></h2><p>Now we are going to show how to compute and plot trim states with different computing options. Default options are set by setHeroesRigidOptions function. The way to override these default options is to define a cell with pair-values of the required options to be changed. For instance, by default setHeroesRigidOptions does not account for any aerodynamic interference between helicopter components. However, heroes provides some simple aerodynamic models to account for the main rotor wake downwash interference with the other components. For a theoretical review of these models see chapter 6 of reference [1]. In this section of the demonstration we are going to set the aerodynamic interference using a linear function by setting the fuselage, tailrotor, vertical fin, left and right horizontal tail planes interference aerodynamic models to @linearInterf. So, we define a cell of pair-values specifying these pair-values, options1. The function parseOptions compares the subset of non-default options, options1, with the default options and sets the values defined by options1 and the other ones are set to default values. See also setHeroesRigidOptions documentation help for more information.</p><pre class="codeinput">options1       = {<span class="keyword">...</span>
+<span class="string">'fInterf'</span>,@linearInterf,<span class="keyword">...</span>
+<span class="string">'trInterf'</span>,@linearInterf,<span class="keyword">...</span>
+<span class="string">'vfInterf'</span>,@linearInterf,<span class="keyword">...</span>
+<span class="string">'lHTPInterf'</span>,@linearInterf,<span class="keyword">...</span>
+<span class="string">'rHTPInterf'</span>,@linearInterf <span class="keyword">...</span>
+};
+options1       = parseOptions(options1,@setHeroesRigidOptions);
+</pre><p>Once the new options are defined they are just input to the trim and stability analysis functions. Therefore, using getNdHeTrimState we obtain a new trim state computed using the aerodynamic interferente between main rotor and th other helicopter components. To compare both trim states and find out what the differences between both computations are we should define a cell of trim state solutions, ndtsSol. This cell of trim state solutions can be input into plotNdTrimState to plot both trim state solutions. To distinguish between both series we define a cell of legends of size 2x1 specifying a meaningful text to each cell slot.</p><pre class="codeinput">ndts1         = getNdHeTrimState(ndHe,muWT,FC,options1);
+ndtsSol       = {ndts.solution,ndts1.solution};
+leg           = {<span class="string">'Without aerodynamic interference'</span>,<span class="keyword">...</span>
+                 <span class="string">'With aerodynamic inteference'</span>};
+plotNdTrimSolution(ndtsSol,axds,leg,<span class="keyword">...</span>
+                   <span class="string">'defaultVars'</span>,azdsTS,<span class="keyword">...</span>
+                   <span class="string">'plot2dMode'</span>,<span class="string">'nFigures'</span>);
+</pre><pre class="codeoutput">Solving trim...  1 of 31
+Solving trim...  2 of 31
+Solving trim...  3 of 31
+Solving trim...  4 of 31
+Solving trim...  5 of 31
+Solving trim...  6 of 31
+Solving trim...  7 of 31
+Solving trim...  8 of 31
+Solving trim...  9 of 31
+Solving trim...  10 of 31
+Solving trim...  11 of 31
+Solving trim...  12 of 31
+Solving trim...  13 of 31
+Solving trim...  14 of 31
+Solving trim...  15 of 31
+Solving trim...  16 of 31
+Solving trim...  17 of 31
+Solving trim...  18 of 31
+Solving trim...  19 of 31
+Solving trim...  20 of 31
+Solving trim...  21 of 31
+Solving trim...  22 of 31
+Solving trim...  23 of 31
+Solving trim...  24 of 31
+Solving trim...  25 of 31
+Solving trim...  26 of 31
+Solving trim...  27 of 31
+Solving trim...  28 of 31
+Solving trim...  29 of 31
+Solving trim...  30 of 31
+Solving trim...  31 of 31
+</pre><img vspace="5" hspace="5" src="demoHelicopterTrimStability_13.png" alt=""> <img vspace="5" hspace="5" src="demoHelicopterTrimStability_14.png" alt=""> <img vspace="5" hspace="5" src="demoHelicopterTrimStability_15.png" alt=""> <img vspace="5" hspace="5" src="demoHelicopterTrimStability_16.png" alt=""> <img vspace="5" hspace="5" src="demoHelicopterTrimStability_17.png" alt=""> <img vspace="5" hspace="5" src="demoHelicopterTrimStability_18.png" alt=""> <h2>Linear Stability analysis<a name="11"></a></h2><p>From the nondimensioal trim state solution we can build up linear stability analysis. The main function to obtain the linear stability from a trim state of a nondimensional helicopter is getndHeLinearStabilityState. The output of this function, ndSs, is a cluttered structure with nondimensional stability derivatives, nondimensional control derivatives, nondimensional eigenvalues and nondimensional eigenvectors. ndSs is also called in short a stability state.</p><pre class="codeinput">ndSs        = getndHeLinearStabilityState(ndts,muWT,ndHe,options);
+</pre><pre class="codeoutput">... Getting linear stability states ...
+Solving Stability...  1 of 31
+Solving Stability...  2 of 31
+Solving Stability...  3 of 31
+Solving Stability...  4 of 31
+Solving Stability...  5 of 31
+Solving Stability...  6 of 31
+Solving Stability...  7 of 31
+Solving Stability...  8 of 31
+Solving Stability...  9 of 31
+Solving Stability...  10 of 31
+Solving Stability...  11 of 31
+Solving Stability...  12 of 31
+Solving Stability...  13 of 31
+Solving Stability...  14 of 31
+Solving Stability...  15 of 31
+Solving Stability...  16 of 31
+Solving Stability...  17 of 31
+Solving Stability...  18 of 31
+Solving Stability...  19 of 31
+Solving Stability...  20 of 31
+Solving Stability...  21 of 31
+Solving Stability...  22 of 31
+Solving Stability...  23 of 31
+Solving Stability...  24 of 31
+Solving Stability...  25 of 31
+Solving Stability...  26 of 31
+Solving Stability...  27 of 31
+Solving Stability...  28 of 31
+Solving Stability...  29 of 31
+Solving Stability...  30 of 31
+Solving Stability...  31 of 31
+</pre><p>Once we have obtained the nondimensional stability state, it is transformed into a dimensional stability state object using the function ndHeSs2HeSs which requires as input the nondimensional stability state, the atmosphere and the altitude of computation.</p><pre class="codeinput">Ss          = ndHeSs2HeSs(ndSs,he,atm,hsl,options);
+</pre><p>The main plot stability state functions plot stability and control derivatives, eigenvalues and eigenvectors.</p><p>First we are going to plot the stability derivatives using the function plotStabilityDerivatives. The first step is to select what kind of stability derivatives we are going to plot. As an example, we store the substructure AllElements of stability derivatives of the stability state object Ss into SsStaDer structure. Because this substructure does not contain information about the independent variable of the analysis we add the velocity modulus to SsStaDer which is the structure to be plotted. As stability derivatives are dimensional variables it makes sense to plot them as functions of helicopter velocity modulus instead of nondimensional velocity modulus VOR. Thus, we define a field V containing the velocity modulus in meters per second.</p><pre class="codeinput">SsStaDer      = Ss.stabilityDerivatives.staDer.AllElements;
+V             = ndV*he.mainRotor.R*he.mainRotor.Omega;
+SsStaDer.V    = V;
+</pre><p>Finally, we plot the stability derivatives structure, SsStaDer, using plotStabilityDerivatives. The x-axis is now redefined to be the substructure velocity modulus, V. By default plotStabilityDerivatives plots the 53 stability derivatives and because for this demonstration 53 plots are too much information we are going to plot two important longitudinal stability derivatives. We define the z-axis of dependent variables by chosing Fx_u which is forward force variation due to a variation in the forward velocity, and My_w which is the pitching moment variation due to variation in the vertical speed.</p><pre class="codeinput">axds          = getaxds({<span class="string">'V'</span>},{<span class="string">'V [m/s]'</span>},1);
+azdsSD        = getaxds(<span class="keyword">...</span>
+                {<span class="string">'Fx_u'</span>,<span class="keyword">...</span>
+                 <span class="string">'My_w'</span>},<span class="keyword">...</span>
+                {<span class="string">'$$F_{x,u}$$ [kg s$$^{-1}$$]'</span>,<span class="keyword">...</span>
+                 <span class="string">'$$M_{y,w}$$ [kg m s$$^{-1}$$]'</span>},<span class="keyword">...</span>
+                 [1,1] <span class="keyword">...</span>
+                 );
+plotStabilityDerivatives(SsStaDer,axds,[],<span class="keyword">...</span>
+                         <span class="string">'defaultVars'</span>,azdsSD,<span class="keyword">...</span>
+                         <span class="string">'plot2dMode'</span>,<span class="string">'nFigures'</span>)
+</pre><img vspace="5" hspace="5" src="demoHelicopterTrimStability_19.png" alt=""> <img vspace="5" hspace="5" src="demoHelicopterTrimStability_20.png" alt=""> <p>To plot control derivatives we follow the same procedure as above. First we define a control derivatives structure SsConDer with the control derivatives of all elements and velocity modulus as fields. Then, we define the dependent variable z-axis structure by selecting some control derivatives. For this demonstratation we choose heave control power or collecive control power, Fz_t0, and the longitudinal cyclic control power or pitch control power derivative, My_t1S.</p><pre class="codeinput">SsConDer    = Ss.controlDerivatives.conDer.AllElements;
+SsConDer.V  = V;
+azdsCD        = getaxds(<span class="keyword">...</span>
+                {<span class="string">'Fz_t0'</span>,<span class="keyword">...</span>
+                 <span class="string">'My_t1S'</span>},<span class="keyword">...</span>
+                {<span class="string">'$$F_{z,\theta_0}$$ [kg m s$$^{-2}$$]'</span>,<span class="keyword">...</span>
+                 <span class="string">'$$M_{y,\theta_{1S}}$$ [kg m$$^2$$ s$$^{-2}$$]'</span>},<span class="keyword">...</span>
+                 [1,1] <span class="keyword">...</span>
+                 );
+plotControlDerivatives(SsConDer,axds,[],<span class="keyword">...</span>
+                         <span class="string">'defaultVars'</span>,azdsCD,<span class="keyword">...</span>
+                         <span class="string">'plot2dMode'</span>,<span class="string">'nFigures'</span>);
+</pre><img vspace="5" hspace="5" src="demoHelicopterTrimStability_21.png" alt=""> <img vspace="5" hspace="5" src="demoHelicopterTrimStability_22.png" alt=""> <p>Another important variables of linear stability states are the eigenvalues and eigenvectors which describes the linear dynamic response of the linearized helicopter dynamical system.</p><p>Eigenvalues are usually represented as a root loci map with the velocity modulus as a parameter. To compute the eigenvalues matlab eig function some times sorts wrongly the eigenvalues and most of the times for a proper track of the eigenvalues heroes uses eigen shuffle function to produce a properly tracked eigenvalues which are denoted with Tr. In this demonstration we use plotStabilityEigenValues to plot the stability state substructure eigenValTr. We proceed as above by defining a new structure with the eigenValTr substructure and velocity modulus as independent variable an finally we use plotStabilityEigenvalues to show the root loci map. We set the option rootLociLabsFmt to ini2end to add labels to each eigenvalue variation with velocity modulus denoting the first and the last values.</p><pre class="codeinput">ssMap         = Ss.eigenSolution.eigenValTr;
+ssMap.V       = V;
+plotStabilityEigenvalues(ssMap,axds,[],<span class="keyword">...</span>
+                         <span class="string">'rootLociLabsFmt'</span>,<span class="string">'ini2end'</span>);
+</pre><img vspace="5" hspace="5" src="demoHelicopterTrimStability_23.png" alt=""> <h2>References<a name="17"></a></h2><p>[1] Alvaro Cuerva Tejero, Jose Luis Espino Granado, Oscar Lopez Garcia, Jose Meseguer Ruiz, and Angel Sanz Andres. Teoria de los Helicopteros. Serie de Ingenieria y Tecnologia Aeroespacial. Universidad Politecnica de Madrid, 2008.</p><p>DEVELOPMENT NOTES</p><p>Two important plot functions do not work anymore with the simple case of vector flight condition and scalar helicopter. These functions are:</p><div><ul><li>plotStabilityEigenvectors</li><li>plotStabilityEigencharacteristics</li></ul></div><p>We should put back these functions into a working state</p><p>eigW          = Ss.eigenSolution.eigW; eigW.V        = V; plotStabilityEigenvectors(eigW,axds,[]);</p><p>charE         = Ss.eigenSolution.charValTr; charE.V       = V; plotStabilityEigencharacteristics(charE,axds,[]);</p><p class="footer"><br>
+      Published with MATLAB&reg; 7.14<br></p></div><!--
+##### SOURCE BEGIN #####
+%% Helicopter Trim and Stabillity Analysis
+% This demo shows how to use trim and stability functions to understand 
+% how to obtain helicopter trim state, helicopter components actions,
+% helicopter stability derivatives, helicopter control derivatives,
+% helicopter linear stability eigenvalues and eigenvectors. 
+
+close all
+setPlot;
+
+%%
+% First we setup heroes environment by defining an ISA+0 atmosphere and 
+% a Bo105 rigid helicopter which are stored at the variables atm and he
+% respectively.
+atm           = getISA;
+he            = PadfieldBo105(atm);
+
+%%
+% Trim and stability default computing options are defined by the function
+% setHeroesRigidOptions. To setup these default options just get them by
+% using setHeroesRigidOptions. We shall explore some of this options latter
+% in this demo. For more information regarding these default options see
+% also setHeroesRigidOptions help documentation.
+options       = setHeroesRigidOptions;
+
+
+%% 
+% getNdHeTrimState is the main trim function and inputs to this function 
+% should be nondimensional helicopter and  nondimensional flight conditions
+% To transform the physical helicopter, he, to nondimensional helicopter 
+% we use the function rigidHe2ndHe and store the nondimensional helicopter
+% at the variable ndHe. The function rigidHe2ndHe requires as inputs the
+% physical helicopter, the atmosphere and the altitude of computation. 
+% Thus, the nondimensional helicopter ndHe depends on the
+% altitude, or in other words, for one physical helicopter we need to
+% create an instance of a nondimensional helicopter for each altitude of
+% interest.
+hsl            = 0;
+ndHe           = rigidHe2ndHe(he,atm,hsl);
+
+%%
+% To define a flight condition we have to specify nondimensional wind and
+% five state variables. First we setup no wind by defining a null vector of
+% dimensions 3x1. Then we define a straight and leveled forward flight 
+% condition by specifying the nondimensional velocity modulus, VOR, the 
+% fuselage yaw angle, betaf0, to zero, the trayectory curvature, cs, 
+% set as zero as well as vertical and lateral velocities with respect
+% ground, wTOR and vTOR. For more information about how to define flight
+% conditions for trim and stability analysis see also getNdHeTrimState
+muWT          = [0; 0; 0];
+ndV           = linspace(0.001,0.25,31);
+FC            = {'VOR',ndV,...
+                 'betaf0',0,...
+                 'wTOR',0,...
+                 'cs',0,...
+                 'vTOR',0};
+
+%%
+% To compute the nondimensional trim state just use the function 
+% getNdHeTrimState.
+ndts          = getNdHeTrimState(ndHe,muWT,FC,options);
+
+%%
+% The nondimensional trim state output structure, ndts,
+% contains 6 main substructures: solution, vel, residuals, flags,
+% actions, and ndPow. Both residuals and flags substructures contain
+% information about the quality of the solution and they should be
+% inspected to check and debug solutions which could not be converged. 
+% Both vel and ndPow provide information about the local velocity fields at
+% each component of the helicopter and global power consumption,
+% respectively. For the moment being, these substructures does not have
+% plot functions and they can only be accessed or used by other functions.
+% The main numerical useful data is contained at solution and actions
+% substructures. Plot functions for solution and actions trim state 
+% substructures are plotNdTrimSolution and plotActionsByElements
+% respectively.
+%
+% Because we have defined a vector of flight conditions by specifying a
+% vector of nondimensional helicopter velocity modulus we have obtained a
+% vector of trims states which can be readily input to trim plot functions.
+% 
+% First we plot the nondimensional trim state solution by using 
+% plotNdTrimSolution. By default this trim plot function plots the 42 trim
+% state variables. Because these number of variables is too much for a
+% demonstration we are going to plot just the euler and control angles
+% required for flying the above flight condition. To do so, we define a
+% z-axis by specifying these variables. The independent variable is
+% obviously the nondimensional velocity modulus and this variable defines
+% the x-axis. Finally and because by default plotNdTrimSolution tries to
+% plot all the variables into one single figure we set the plot2dMode to
+% nFigures. In this way, plotNdTrimSolution, plots each variable into a
+% single figure.
+azdsTS        = getaxds(...
+                {'Theta','Phi',...
+                 'theta0','theta1C',...
+                 'theta1S','theta0tr'},...
+                {'$$\Theta$$ [$$^o$$]','$$\Phi$$ [$$^o$$]',...
+                 '$$\theta_{0}$$ [$$^o$$]','$$\theta_{1C}$$ [$$^o$$]',...
+                 '$$\theta_{1S}$$ [$$^o$$]','$$\theta_{0tr}$$ [$$^o$$]'},...
+                 [180/pi,180/pi, ...
+                  180/pi,180/pi,...
+                  180/pi,180/pi]...
+                 );
+axds          = getaxds({'VOR'},{'$$V/(\Omega R)$$ [-]'},1);
+plotNdTrimSolution(ndts.solution,axds,[],...
+                   'defaultVars',azdsTS,...
+                   'plot2dMode','nFigures');
+
+
+
+
+%%
+% Now we plot the nondimensional actions by each element of the helicopter,
+% i.e. main rotor (mr), tail rotor (tr), fuselage (f), left horizontal tail
+% plane (lhtp), right horizontal tail plane (rhtp), vertical fin (vf) and
+% weight (W). Actions are forces and moments of each helicopter component.
+% One important difference with respect trim state is that flight condition
+% parameters are not included in the substructure actions. Therefore
+% function plotActionsByElements inputs not only the indepedent variable 
+% axis definition but also the independent variable values. As before, 
+% plotActionsByElements by default plots all the force and moment
+% vector components and because it is too much information for this
+% preliminary demonstration we set onlyto be plotted the three components 
+% of forces and moments with respect the center of gravity of the 
+% helicopter. By default these actions components are projected into 
+% the fuselage frame, i.e. body coordinate system. See also
+% plotActionsByElements options to obtain ground coordinate system actions
+% projections. Note that the sum of each action component by elements
+% should be equal to zero at each helicopter velocity because of the 
+% trim condition definition.
+
+azdsACT       = getaxds({'CFx'  'CFy'  'CFz' ...
+                       'CMtx' 'CMty' 'CMtz'},...
+                      {'$$C_{Fx}$$ [-]' '$$C_{Fy}$$ [-]' '$$C_{Fz}$$ [-]' ...
+                       '$$C_{Mx}$$ [-]' '$$C_{My}$$ [-]' '$$C_{Mz}$$ [-]'}, ...
+                      [1 1 1 ...
+                       1 1 1]);
+plotActionsByElement(ndts.actions,axds,ndV,'defaultVars',azdsACT);               
+
+%%  How to compute trim states with different options 
+% Now we are going to show how to compute and plot trim states with 
+% different computing options. Default options are set by 
+% setHeroesRigidOptions function. The way to override these default options
+% is to define a cell with pair-values of the required options to be
+% changed. For instance, by default setHeroesRigidOptions does not account
+% for any aerodynamic interference between helicopter components. However,
+% heroes provides some simple aerodynamic models to account for the main
+% rotor wake downwash interference with the other components. For a
+% theoretical review of these models see chapter 6 of reference [1]. In
+% this section of the demonstration we are going to set the aerodynamic
+% interference using a linear function by setting the fuselage, tailrotor,
+% vertical fin, left and right horizontal tail planes interference
+% aerodynamic models to @linearInterf. So, we define a cell of pair-values 
+% specifying these pair-values, options1. The function parseOptions compares
+% the subset of non-default options, options1, with the default options and
+% sets the values defined by options1 and the other ones are set to default
+% values. See also setHeroesRigidOptions documentation help for more
+% information. 
+options1       = {... 
+'fInterf',@linearInterf,...
+'trInterf',@linearInterf,...
+'vfInterf',@linearInterf,...
+'lHTPInterf',@linearInterf,...
+'rHTPInterf',@linearInterf ...
+};
+options1       = parseOptions(options1,@setHeroesRigidOptions);
+
+
+%%
+% Once the new options are defined they are just input to the trim and
+% stability analysis functions. Therefore, using getNdHeTrimState we obtain
+% a new trim state computed using the aerodynamic interferente between 
+% main rotor and th other helicopter components. To compare both trim
+% states and find out what the differences between both computations are we
+% should define a cell of trim state solutions, ndtsSol. This cell of trim
+% state solutions can be input into plotNdTrimState to plot both trim state
+% solutions. To distinguish between both series we define a cell of legends
+% of size 2x1 specifying a meaningful text to each cell slot.
+ndts1         = getNdHeTrimState(ndHe,muWT,FC,options1);
+ndtsSol       = {ndts.solution,ndts1.solution};
+leg           = {'Without aerodynamic interference',...
+                 'With aerodynamic inteference'};
+plotNdTrimSolution(ndtsSol,axds,leg,...
+                   'defaultVars',azdsTS,...
+                   'plot2dMode','nFigures');
+
+
+%% Linear Stability analysis
+%
+% From the nondimensioal trim state solution we can build up linear
+% stability analysis. The main function to obtain the linear stability 
+% from a trim state of a nondimensional helicopter is 
+% getndHeLinearStabilityState. The output of this function, ndSs, is a 
+% cluttered structure with nondimensional stability derivatives, 
+% nondimensional control derivatives, nondimensional eigenvalues 
+% and nondimensional eigenvectors. ndSs is also called in short a 
+% stability state.
+ndSs        = getndHeLinearStabilityState(ndts,muWT,ndHe,options);
+
+%%
+% Once we have obtained the nondimensional stability state, it is 
+% transformed into a dimensional stability state object using the function 
+% ndHeSs2HeSs which requires as input the nondimensional stability state,
+% the atmosphere and the altitude of computation.
+Ss          = ndHeSs2HeSs(ndSs,he,atm,hsl,options);
+
+%%
+% The main plot stability state functions plot stability and control
+% derivatives, eigenvalues and eigenvectors. 
+%
+% First we are going to plot the stability derivatives using the function 
+% plotStabilityDerivatives. The first step is to select what kind of
+% stability derivatives we are going to plot. As an example, we store the
+% substructure AllElements of stability derivatives of the stability 
+% state object Ss into SsStaDer structure. Because this substructure 
+% does not contain information about the independent variable of the 
+% analysis we add the velocity modulus to SsStaDer which is the 
+% structure to be plotted. As stability derivatives are dimensional 
+% variables it makes sense to plot them as functions of helicopter 
+% velocity modulus instead of nondimensional velocity modulus VOR. 
+% Thus, we define a field V containing the velocity modulus in meters 
+% per second. 
+%
+SsStaDer      = Ss.stabilityDerivatives.staDer.AllElements;
+V             = ndV*he.mainRotor.R*he.mainRotor.Omega;
+SsStaDer.V    = V;
+
+%%
+% Finally, we plot the stability derivatives structure, SsStaDer, using 
+% plotStabilityDerivatives. The x-axis is now redefined to be the 
+% substructure velocity modulus, V. By default plotStabilityDerivatives 
+% plots the 53 stability derivatives and because for this demonstration 53
+% plots are too much information we are going to plot two important
+% longitudinal stability derivatives. We define the z-axis of dependent
+% variables by chosing Fx_u which is forward force variation due to a
+% variation in the forward velocity, and My_w which is the pitching moment
+% variation due to variation in the vertical speed. 
+axds          = getaxds({'V'},{'V [m/s]'},1);
+azdsSD        = getaxds(...
+                {'Fx_u',...
+                 'My_w'},...
+                {'$$F_{x,u}$$ [kg s$$^{-1}$$]',...
+                 '$$M_{y,w}$$ [kg m s$$^{-1}$$]'},...
+                 [1,1] ...
+                 );
+plotStabilityDerivatives(SsStaDer,axds,[],...
+                         'defaultVars',azdsSD,...
+                         'plot2dMode','nFigures')
+
+
+%%
+% To plot control derivatives we follow the same procedure as above. First
+% we define a control derivatives structure SsConDer with the control
+% derivatives of all elements and velocity modulus as fields. Then, we 
+% define the dependent variable z-axis structure by selecting some control
+% derivatives. For this demonstratation we choose heave control power or
+% collecive control power, Fz_t0, and the longitudinal cyclic control power
+% or pitch control power derivative, My_t1S.
+ 
+SsConDer    = Ss.controlDerivatives.conDer.AllElements;
+SsConDer.V  = V;
+azdsCD        = getaxds(...
+                {'Fz_t0',...
+                 'My_t1S'},...
+                {'$$F_{z,\theta_0}$$ [kg m s$$^{-2}$$]',...
+                 '$$M_{y,\theta_{1S}}$$ [kg m$$^2$$ s$$^{-2}$$]'},...
+                 [1,1] ...
+                 );
+plotControlDerivatives(SsConDer,axds,[],...
+                         'defaultVars',azdsCD,...
+                         'plot2dMode','nFigures');
+
+%%
+% Another important variables of linear stability states are the
+% eigenvalues and eigenvectors which describes the linear dynamic response
+% of the linearized helicopter dynamical system.
+%
+% Eigenvalues are usually represented as a root loci map with the velocity
+% modulus as a parameter. To compute the eigenvalues matlab eig function
+% some times sorts wrongly the eigenvalues and most of the times for a
+% proper track of the eigenvalues heroes uses eigen shuffle function to
+% produce a properly tracked eigenvalues which are denoted with Tr. In this
+% demonstration we use plotStabilityEigenValues to plot the stability state
+% substructure eigenValTr. We proceed as above by defining a new structure
+% with the eigenValTr substructure and velocity modulus as independent
+% variable an finally we use plotStabilityEigenvalues to show the root loci
+% map. We set the option rootLociLabsFmt to ini2end to add labels to each
+% eigenvalue variation with velocity modulus denoting the first and the
+% last values.
+ssMap         = Ss.eigenSolution.eigenValTr;
+ssMap.V       = V;
+plotStabilityEigenvalues(ssMap,axds,[],...
+                         'rootLociLabsFmt','ini2end');
+
+
+%% References
+%
+% [1] Alvaro Cuerva Tejero, Jose Luis Espino Granado, Oscar Lopez Garcia,
+% Jose Meseguer Ruiz, and Angel Sanz Andres. Teoria de los Helicopteros.
+% Serie de Ingenieria y Tecnologia Aeroespacial. Universidad Politecnica
+% de Madrid, 2008.
+%
+% DEVELOPMENT NOTES
+%
+% Two important plot functions do not work anymore with the simple case of
+% vector flight condition and scalar helicopter. These functions are:
+%
+% * plotStabilityEigenvectors
+% * plotStabilityEigencharacteristics
+% 
+% We should put back these functions into a working state
+%
+% eigW          = Ss.eigenSolution.eigW;
+% eigW.V        = V;
+% plotStabilityEigenvectors(eigW,axds,[]);
+% 
+% 
+% charE         = Ss.eigenSolution.charValTr;
+% charE.V       = V;
+% plotStabilityEigencharacteristics(charE,axds,[]);
+
+##### SOURCE END #####
+--></body></html>

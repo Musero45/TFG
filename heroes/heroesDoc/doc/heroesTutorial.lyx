@@ -1,0 +1,599 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass beamer
+\begin_preamble
+% Paquetes latex generales
+
+\usepackage{multicol}
+\usepackage{cancel}
+\usepackage{listings}
+\lstset{basicstyle=\normalfont\ttfamily\tiny,frame=none,aboveskip=0bp,belowskip=0bp,escapechar={|}}
+
+\input{../comun/preamble_ppt.tex}
+\input{../comun/makeHandouts.tex}
+\input{../comun/makeHandoutsBN.tex}
+\end_preamble
+\use_default_options false
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman lmodern
+\font_sans lmss
+\font_typewriter lmtt
+\font_default_family rmdefault
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\float_placement H
+\paperfontsize 10
+\spacing single
+\use_hyperref false
+\papersize a4paper
+\use_geometry true
+\use_amsmath 2
+\use_esint 0
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 0
+\branch notas
+\selected 0
+\filename_suffix 0
+\color #ffaa00
+\end_branch
+\branch ppt
+\selected 1
+\filename_suffix 0
+\color #55aaff
+\end_branch
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 2
+\tocdepth 2
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+newcommand{
+\backslash
+myname}{heroes}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+newcommand{
+\backslash
+thisyear}{2013-2014}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+newcommand{
+\backslash
+myHeroesVersion}{1.0.0 (R2014a)}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Title
+HEROES
+\begin_inset Argument
+status open
+
+\begin_layout Plain Layout
+Heroes
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Author
+Alvaro Cuerva Tejero
+\begin_inset CommandInset href
+LatexCommand href
+name "alvaro.cuerva@upm.es"
+target "alvaro.cuerva@upm.es"
+type "mailto:"
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+Oscar López García
+\begin_inset CommandInset href
+LatexCommand href
+name "oscar.lopez.garcia@upm.es"
+target "oscar.lopez.garcia@upm.es"
+type "mailto:"
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+Cristóbal Gallego
+\begin_inset CommandInset href
+LatexCommand href
+name "cristobaljose.gallego@upm.es"
+target "cristobaljose.gallego@upm.es"
+type "mailto:"
+
+\end_inset
+
+
+\begin_inset Argument
+status open
+
+\begin_layout Plain Layout
+PFC
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Date
+A matlab toolbox to simulate Helicopter Flight Mechanics
+\begin_inset Newline newline
+\end_inset
+
+Universidad Politécnica de Madrid
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+thisyear
+\end_layout
+
+\end_inset
+
+
+\begin_inset Argument
+status open
+
+\begin_layout Plain Layout
+Helicopters
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout BeginFrame
+Introduction
+\end_layout
+
+\begin_layout EndFrame
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Branch ppt
+status open
+
+\begin_layout BeginFrame
+How to release a version of the toolbox
+\end_layout
+
+\begin_layout Itemize
+From linux tar command, this oneliner is enough to release a complete tar
+ ball of the toolbox
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+$ tar cvfz ~/Path2Wherever/heroes.tgz --exclude '.svn' /path2heroes
+\end_layout
+
+\end_deeper
+\begin_layout EndFrame
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Branch ppt
+status open
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{frame}[allowframebreaks,fragile]
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+frametitle{How to install 
+\backslash
+myname }
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstinputlisting[language=sh]{../../INSTALL}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{frame}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{frame}[allowframebreaks,fragile]
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+frametitle{Setting up the environment}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+The first thing to check that the instalation process has been successful
+ is to check some basic commands.
+\end_layout
+
+\begin_layout Itemize
+First, just check the version number of the heroes toolbox
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{lstlisting}[numbers=none,language=Matlab,escapechar=
+\backslash
+%]
+\end_layout
+
+\begin_layout Plain Layout
+
+>> heroesVersion
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+ans =
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+%
+\backslash
+myHeroesVersion%
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+>>
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{lstlisting}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Or check the available help online
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{lstlisting}[numbers=none,language=Matlab]
+\end_layout
+
+\begin_layout Plain Layout
+
+>> help heroes
+\end_layout
+
+\begin_layout Plain Layout
+
+  HEROES TOOLBOX
+\end_layout
+
+\begin_layout Plain Layout
+
+  HElicopter and ROtor Equilibrium and Stability toolbox
+\end_layout
+
+\begin_layout Plain Layout
+
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+  In order to setup heroes path and acces to the whole
+\end_layout
+
+\begin_layout Plain Layout
+
+  functionality of the toolbox:
+\end_layout
+
+\begin_layout Plain Layout
+
+    >> setHeroesPath
+\end_layout
+
+\begin_layout Plain Layout
+
+...
+\end_layout
+
+\begin_layout Plain Layout
+
+>>
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{lstlisting}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Do not forget that most of the functions should provide some help.
+ For instance
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{lstlisting}[numbers=none,language=Matlab]
+\end_layout
+
+\begin_layout Plain Layout
+
+>> help vMaxROC
+\end_layout
+
+\begin_layout Plain Layout
+
+  vMaxROC computes the velocity for maximum rate of climb
+\end_layout
+
+\begin_layout Plain Layout
+
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+    Example of usage
+\end_layout
+
+\begin_layout Plain Layout
+
+    Compute the maximum rate of climb of the SuperPuma helicopter at 1000
+ m.
+\end_layout
+
+\begin_layout Plain Layout
+
+...
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{lstlisting}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Last but not least, setup the 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+myname
+\end_layout
+
+\end_inset
+
+ environment by adding all the 
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{frame}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout BeginFrame
+Dimensioning
+\end_layout
+
+\begin_layout EndFrame
+
+\end_layout
+
+\end_body
+\end_document

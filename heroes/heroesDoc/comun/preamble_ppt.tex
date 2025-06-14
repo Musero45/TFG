@@ -1,0 +1,91 @@
+%
+% Beamer-Template/-Color/-Font some beamer element
+% \setbeamertemplate{some beamer element}[options]
+% \setbeamercolor{some beamer element}[options]
+% \setbeamerfont{some beamer element}[options]
+
+%\input{makeHandouts}
+
+% Next line allows math fonts like LaTeX (lmodern) if it is selected
+\usefonttheme{serif}
+
+\usetheme{CambridgeUS}
+% or ...
+%=======================================================================
+\definecolor{darkblue}{rgb}{0,0,0.8}
+\definecolor{darkBlack}{rgb}{0.2,0.2,0.2}
+% 
+% \setbeamercolor{section in toc}{fg=black,bg=white}
+% \setbeamercolor{alerted text}{fg=darkblue!80!gray}
+% \setbeamercolor*{palette primary}{fg=darkblue!60!black,bg=gray!30!white}
+% \setbeamercolor*{palette secondary}{fg=darkblue!70!black,bg=gray!15!white}
+% \setbeamercolor*{palette tertiary}{bg=darkblue!80!black,fg=gray!10!white}
+% \setbeamercolor*{palette quaternary}{fg=darkblue,bg=gray!5!white}
+% 
+% \setbeamercolor*{sidebar}{fg=darkblue,bg=gray!15!white}
+% 
+% \setbeamercolor*{palette sidebar primary}{fg=darkblue!10!black}
+% \setbeamercolor*{palette sidebar secondary}{fg=white}
+% \setbeamercolor*{palette sidebar tertiary}{fg=darkblue!50!black}
+% \setbeamercolor*{palette sidebar quaternary}{fg=gray!10!white}
+% 
+% %\setbeamercolor*{titlelike}{parent=palette primary}
+\setbeamercolor{titlelike}{parent=pallette primary,fg=darkBlack}
+% \setbeamercolor{frametitle}{bg=gray!10!white}
+% \setbeamercolor{frametitle right}{bg=gray!60!white}
+% 
+% \setbeamercolor*{separation line}{}
+% \setbeamercolor*{fine separation line}{}
+
+%=======================================================================
+
+
+\setbeamertemplate{bibliography item}[text]
+\setbeamercovered{transparent}
+% or whatever (possibly just delete it)
+
+\definecolor{darkred}{rgb}{0.8,0,0.0}
+\definecolor{darkmagenta}{rgb}{0.8,0.0,0.8}
+
+
+\setbeamercolor{alerted text}{fg=darkred}
+
+\setbeamercolor{block title}{use=structure,fg=white,bg=darkblue!90!black}
+\setbeamercolor{block title alerted}{use=alerted text,fg=white,bg=darkred!60!black}
+\setbeamercolor{block title example}{use=example text,fg=white,bg=darkmagenta!80!black}
+
+\setbeamercolor{block body}{parent=normal text,use=block title,bg=block title.bg!10!bg}
+\setbeamercolor{block body alerted}{parent=normal text,use=block title alerted,bg=block title alerted.bg!10!bg}
+\setbeamercolor{block body example}{parent=normal text,use=block title example,bg=block title example.bg!10!bg}
+
+% Control del tamanho de las fuentes
+\setbeamerfont{enano}{size=\tiny}
+\setbeamerfont{pequenhisimo}{size=\scriptsize}
+\setbeamerfont{pequenho}{size=\footnotesize}
+\setbeamerfont{normal}{size=\normalsize}
+
+% Posibilidad de numerar flotantes
+\setbeamertemplate{caption}[numbered]
+
+% Posibilidad de eliminar barra de navegacion
+\setbeamertemplate{navigation symbols}{}
+
+
+% paquetes y abreviaturas matematicas
+% \usepackage{bm}
+% \input{../../comun/math.tex}
+\newcommand{\D}{\ensuremath{\mathrm{d}}}
+
+% hyperref siempre debe ser el ultimo paquete en ser cargado
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,
+  filecolor=cyan,
+  citecolor=red,
+  pdftitle={},
+  pdfsubject={},
+  pdfauthor={Oscar Lopez <oscar.lopez.garcia@upm.es>},
+  pdfkeywords={LyX, ICE, curso de aprendizaje},
+  bookmarksopen=false
+}

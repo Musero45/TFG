@@ -1,0 +1,1665 @@
+#LyX 1.6.3 created this file. For more info see http://www.lyx.org/
+\lyxformat 345
+\begin_document
+\begin_header
+\textclass article
+\begin_preamble
+\input{../../comun/preamble_doc_nano.tex}
+
+\author{Álvaro Cuerva\\ Óscar López\\ Mariano Rubio}
+\foot{A. Cuerva, O. López, M. Rubio}
+\heading{HEROES inflow}
+\city{Madrid}
+\month{November}
+\year{2010}
+\end_preamble
+\options fleqn
+\use_default_options false
+\language english
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\float_placement H
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Title
+HEROES induced velocity model
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset toc
+LatexCommand tableofcontents
+
+\end_inset
+
+
+\begin_inset Newpage clearpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Introduction
+\end_layout
+
+\begin_layout Standard
+The representation of the rotor system reaches a high level of sophistication
+ in terms of the dynamics of the blade motion.
+ In order to describe it accurately, the aerodynamic counterpart must be
+ developed with a certain level of detail.
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+As an important part of the helicopter aerodynamics, the induced velocities
+ at and near the rotor have been widely studied.
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In the past, uniform inflow model has commonly been used to describe the
+ flowfield.
+ Although it is known that induced velocities are not uniform along the
+ rotor disc, the absence of high computational capabilities and the need
+ of a simple approximation to the problem have been reasons strong enough
+ to consider the uniform flow as a normal assumption.
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Nowadays, with the expansion of computational power at reduced cost, a more
+ realistic representation of the inflow can be provided.
+ This way, accounting for the nonuniformity and the dynamics associated
+ with the rotor wake, this improvement gives a better approximation to the
+ real flow, allowing to obtain more accurate results.
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Although there are high-complexity models to describe a vortex wake distorted
+ by itself and the helicopter motion, it has been shown that an armonic
+ inflow model leads to satisfactory results when talking about control and
+ flight dynamics.
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newpage clearpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Uniform induced velocity
+\end_layout
+
+\begin_layout Standard
+Three are the basic models used to describe the uniform inflow through the
+ rotor disc.
+ Attending to their characteristics, two of them are valid in all flight
+ conditions, while the first one presents some problems when the rotor is
+ operating in the vortex ring state.
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In all of the following models, it is assumed that the inflow vector expressed
+ on the tip-path plane frame is 
+\begin_inset Formula $[0,0,\lambda_{i}]$
+\end_inset
+
+.
+ This way, the advance parameters should be expressed on the same reference,
+ leading to 
+\begin_inset Formula $\mu_{x_{TPP}}$
+\end_inset
+
+, 
+\begin_inset Formula $\mu_{y_{TPP}}$
+\end_inset
+
+ and 
+\begin_inset Formula $\mu_{z_{TPP}}$
+\end_inset
+
+.
+ Taking into account the relationships between the TPP and the hub frames,
+ it is:
+\begin_inset Formula \begin{eqnarray}
+\mu_{x_{TPP}} & = & \mu_{x_{H}}+\beta_{1C}\mu_{z_{H}}\simeq\mu_{x_{H}}\\
+\mu_{y_{TPP}} & = & \mu_{y_{H}}+\beta_{1S}\mu_{z_{H}}\simeq\mu_{y_{H}}\\
+\mu_{z_{TPP}} & = & \mu_{z_{H}}-\beta_{1C}\mu_{x_{H}}-\beta_{1S}\mu_{y_{H}}\simeq\mu_{z_{H}}-\beta_{1C}\mu_{x_{H}}\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In addition to this, the presence of atmospheric wind is modeled adding
+ its components 
+\begin_inset Formula $[\mu_{W_{x}},\mu_{W_{y}},\mu_{W_{z}}]$
+\end_inset
+
+ to the ones mentioned above.
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+To maintain simpler and more reduced expressions, the notation used in the
+ subsequent analysis is 
+\begin_inset Formula $\mu_{x}$
+\end_inset
+
+, 
+\begin_inset Formula $\mu_{y}$
+\end_inset
+
+ and 
+\begin_inset Formula $\mu_{z}$
+\end_inset
+
+.
+ Nevertheless, it is necessary to keep in mind the foregoing statements.
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Glauert
+\end_layout
+
+\begin_layout Standard
+This model developed by Glauert considers the rotor as a disc in presence
+ of a stream which passes through it.
+ This condition is normally modeled using its velocity 
+\begin_inset Formula $V$
+\end_inset
+
+ and the angle of attack 
+\begin_inset Formula $\alpha_{D}$
+\end_inset
+
+.
+ These variables can be changed to the non-dimensional parameters, used
+ from now on to, to calculate the inflow ratio 
+\begin_inset Formula $\lambda_{i}$
+\end_inset
+
+.
+ This way, the Glauert's model can be written as follows: 
+\begin_inset Formula \begin{equation}
+C_{T}+2\lambda_{i}+\sqrt{\mu_{x}^{2}+\mu_{y}^{2}+(\lambda_{i}+\mu_{z})^{2}}=0\label{eq:Glauert}\end{equation}
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Subsection
+Rand's model 
+\end_layout
+
+\begin_layout Standard
+To avoid the singularity present in descent flight, Rand proposed a collection
+ of equations valid for the different states of the rotor flow.
+ This explicit equations are based on experimental data to obtain a valid
+ expression in the vortex-ring state.
+ 
+\begin_inset Formula \begin{equation}
+\lambda_{i}=\frac{\lambda_{ia}}{\frac{2}{C_{T}}\sqrt{1+\mu^{2}}}\end{equation}
+
+\end_inset
+
+ where 
+\begin_inset Formula \begin{equation}
+\lambda_{ia}=\begin{cases}
+0.5\left(-\mu_{z}+\sqrt{\mu_{z}^{2}-2C_{T}}\right) & \mu_{z}\geq\sqrt{2C_{T}}\\
+-\sqrt{\frac{C_{T}}{2}}-0.5\mu_{z}-\frac{25}{12}\mu_{z}^{2}\sqrt{\frac{2}{C_{T}}}+\frac{7}{6}\mu_{z}^{3}\frac{2}{C_{T}}\quad & 0\geq\mu_{z}\geq\sqrt{2C_{T}}\\
+-0.5\left(\mu_{z}+\sqrt{\mu_{z}^{2}+2C_{T}}\right) & \mu_{z}\leq0\end{cases}\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Cuerva & others' model
+\end_layout
+
+\begin_layout Standard
+As Rand's, this model is based on experimental measures made in a vortex
+ ring state.
+ Fitting this measures, a single implicit equation is given to determine
+ the inflow parameter.
+ There is only one equation valid for all rotor states 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \begin{equation}
+C_{T}+2A\lambda_{i}+\sqrt{\mu_{x}^{2}+\mu_{y}^{2}+B^{2}\mu_{z}^{2}(\lambda_{i}+\mu_{z})^{2}}=0\label{eq:Cuerva}\end{equation}
+
+\end_inset
+
+Where 
+\begin_inset Formula $A$
+\end_inset
+
+ and 
+\begin_inset Formula $B$
+\end_inset
+
+ are parameters that can be adjusted.
+ 
+\begin_inset Formula $A=0.745$
+\end_inset
+
+ and 
+\begin_inset Formula $B=0.477$
+\end_inset
+
+ are used by default.
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Figure
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:randcuerva"
+
+\end_inset
+
+ shows the differences between the two models valid in all descent flight
+ conditions.
+ Some differences can be observed between the two models.
+ These dissimilarities come from the parameters used to fit the experimental
+ data.
+\end_layout
+
+\begin_layout Standard
+\noindent
+\align center
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+fbox{
+\end_layout
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename figures/Rand.pdf
+	width 85text%
+	clip
+	rotateOrigin center
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:randcuerva"
+
+\end_inset
+
+Cuerva's (solid) and Rand's (dashed) induced velocity in different flight
+ conditions given by combinations of 
+\begin_inset Formula $V$
+\end_inset
+
+ and 
+\begin_inset Formula $\alpha_{D}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage clearpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Armonic inflow model
+\end_layout
+
+\begin_layout Standard
+The next step in representing the flow induced by the rotor leads to suppose
+ it as a first armonic distribution varying along the blade span and depending
+ on the azimut, 
+\begin_inset Formula \begin{equation}
+\lambda_{i}=\lambda_{0}+x(\lambda_{1C}\cos\psi+\lambda_{1S}\sin\psi)\label{eq:lambda}\end{equation}
+
+\end_inset
+
+where 
+\begin_inset Formula $x$
+\end_inset
+
+ represents the nondimensional distance along the blade, 
+\begin_inset Formula $r/R$
+\end_inset
+
+.
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+It is necessary, this way, find some models that allow to determine the
+ sine and cosine components of the inflow, 
+\begin_inset Formula $\lambda_{1S}$
+\end_inset
+
+ and 
+\begin_inset Formula $\lambda_{1C}$
+\end_inset
+
+ respectively.
+\end_layout
+
+\begin_layout Subsection
+Models based on skew angles
+\end_layout
+
+\begin_layout Standard
+There are a lot of models based on measures and estimations to calculate
+ the armonic parameters.
+ Most of them are based on the assumption of a rigid cylindrical wake.
+ Defining the wake skew angle as
+\begin_inset Formula \begin{equation}
+\chi=\arctan\frac{\mu}{\mu_{z}-\lambda_{i}}\end{equation}
+
+\end_inset
+
+with 
+\begin_inset Formula $\chi\in[0\,\pi]$
+\end_inset
+
+, the different models proposed consider contributions to the global inflow
+ as corrections proportional to the uniform induced velocity.
+ Therefore,
+\begin_inset Formula \begin{equation}
+\lambda_{i}=\lambda_{0}(xk_{x}\cos\psi+xk_{y}\sin\psi)\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The formulae given by assorted authors is consigned below.
+\end_layout
+
+\begin_layout Paragraph
+Coleman
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \begin{eqnarray*}
+k_{x} & = & \tan\frac{\chi}{2}\\
+k_{y} & = & 0\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Paragraph
+Drees
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \begin{eqnarray*}
+k_{x} & = & \frac{4}{3}\left(1-1.8\mu^{2}\right)\tan\frac{\chi}{2}\\
+k_{y} & = & -2\mu\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Paragraph
+Payne
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \begin{eqnarray*}
+k_{x} & = & {\displaystyle \frac{4}{3}\frac{\tan\chi}{1.2+\tan\chi}}\\
+k_{y} & = & 0\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Paragraph
+White
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \begin{eqnarray*}
+k_{x} & = & \sqrt{2}\sin\chi\\
+k_{y} & = & 0\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Paragraph
+Pitt
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \begin{eqnarray*}
+k_{x} & = & \frac{15\pi}{32}\tan\frac{\chi}{2}\\
+k_{y} & = & 0\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Paragraph
+Howlett
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \begin{eqnarray*}
+k_{x} & = & \sin^{2}\chi\\
+k_{y} & = & 0\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In descent flight, when the complete flow crosses the disc from the bottom
+ to the top (
+\begin_inset Formula $\chi>\pi/2$
+\end_inset
+
+) some corrections have to be made.
+ This way, in the previous models shown, it is necessary to change 
+\begin_inset Formula $\tan\chi$
+\end_inset
+
+ for 
+\begin_inset Formula $-\tan\chi$
+\end_inset
+
+ and use 
+\begin_inset Formula $\cot\frac{\chi}{2}$
+\end_inset
+
+ instead of 
+\begin_inset Formula $\tan\frac{\chi}{2}$
+\end_inset
+
+ This modification is mentioned by Coleman in 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "bib:Col"
+
+\end_inset
+
+.
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+To sum up, in figures 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:skew1"
+
+\end_inset
+
+ and 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:skew2"
+
+\end_inset
+
+, can be observed the differences between the previous models based on the
+ skew angle, depending on the flight condition.
+ As expected, the tend is the same independently on the model chosen, because
+ all of them are representing an unique magnitude.
+ Nevertheless, are the small variations than can be observed what allow
+ a better approach to the real field.
+ The sine component has not been represented because of the lack of it in
+ the most of the models when considering simmetric advance flight.
+\end_layout
+
+\begin_layout Standard
+\noindent
+\align center
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+fbox{
+\end_layout
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename figures/skew-60.pdf
+	width 50text%
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+}
+\backslash
+fbox{
+\end_layout
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename figures/skew0.pdf
+	width 50text%
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:skew1"
+
+\end_inset
+
+Inflow parameter 
+\begin_inset Formula $\lambda_{1C}$
+\end_inset
+
+ calculated using the skew models for ascent
+\begin_inset Formula $\alpha_{D}=-60º$
+\end_inset
+
+ (left) and advance flight (right)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+fbox{
+\end_layout
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename figures/skew20.pdf
+	width 50text%
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+}
+\backslash
+fbox{
+\end_layout
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename figures/skew50.pdf
+	width 50text%
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+fbox{
+\end_layout
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename figures/skew70.pdf
+	width 50text%
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:skew2"
+
+\end_inset
+
+
+\begin_inset Formula $\lambda_{1C}$
+\end_inset
+
+ calculated using the skew models for various incidences in descent flight,
+ 
+\begin_inset Formula $20$
+\end_inset
+
+º (left), 
+\begin_inset Formula $50º$
+\end_inset
+
+ (right), and 
+\begin_inset Formula $70º$
+\end_inset
+
+ (bottom)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Regarding to the expressions, it is easy to appreciate that only White's
+ and Howlett's models give solutions with a continuous first derivative.
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Taking into account that the models based on the skew angles give the inflow
+ parameters considering advance flight, these components of the induced
+ velocity should be corrected in order to be capable of calculate the induced
+ flow in other flight conditions, with sideslip angles different from zero.
+ This correction is only a frame transformation, involving the angle between
+ the stream and the 
+\begin_inset Formula $x_{H}$
+\end_inset
+
+ axis.
+ This way, the final cosine and sine components of the induced velocity
+ field are given by: 
+\begin_inset Formula \begin{eqnarray}
+\lambda_{1C} & = & \lambda_{0}(k_{x}\cos\psi_{0}+k_{y}\sin\psi_{0})\label{eq:lambda1C}\\
+\lambda_{1S} & = & \lambda_{0}(-k_{x}\sin\psi_{0}+k_{y}\cos\psi_{0})\label{eq:lambda1S}\end{eqnarray}
+
+\end_inset
+
+where 
+\begin_inset Formula $\psi_{0}$
+\end_inset
+
+ is the sideslip angle which, in the variables used is defined as: 
+\begin_inset Formula \begin{equation}
+\psi_{0}=\arctan\frac{\mu_{y}}{\mu_{x}}\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+To make it clear, it can be observed in figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:distrib"
+
+\end_inset
+
+ two distributions of induced velocity calculated for pure advance flight
+ and lateral flight as well.
+ It is easy to confirm that the inflow field is the same in both situations
+ but a 90º clockwise rotation.
+\end_layout
+
+\begin_layout Standard
+\noindent
+\align center
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+fbox{
+\end_layout
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename figures/1_surf.pdf
+	width 50text%
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+}
+\backslash
+fbox{
+\end_layout
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename figures/3_surf.pdf
+	width 50text%
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+fbox{
+\end_layout
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename figures/1_cont.pdf
+	width 50text%
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+}
+\backslash
+fbox{
+\end_layout
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename figures/3_cont.pdf
+	width 50text%
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:distrib"
+
+\end_inset
+
+
+\begin_inset Formula $\lambda_{i}$
+\end_inset
+
+ calculated using Cuerva's + Drees' models, for advance flight, 
+\begin_inset Formula $\mu_{x}=0.15$
+\end_inset
+
+ (left) and lateral flight, 
+\begin_inset Formula $\mu_{y}=0.15$
+\end_inset
+
+ (right)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\noindent
+Equations 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:lambda1C"
+
+\end_inset
+
+ and 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:lambda1S"
+
+\end_inset
+
+ show that different inflow fields through the rotor disc can be modeled
+ by combining an uniform inflow model and one of the skew ones.
+ For instance, in figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:glauert+coleman"
+
+\end_inset
+
+ it is shown the inflow parameters corresponding to Glauert's model for
+ the uniform component and Coleman's one for the armonics.
+\end_layout
+
+\begin_layout Standard
+\noindent
+\align center
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+fbox{
+\end_layout
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename figures/Pad.pdf
+	width 70text%
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:glauert+coleman"
+
+\end_inset
+
+Induced velocity given by the combination of Glauert's (uniform) and Coleman's
+ (armonic) models, in different flight conditions
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Local momentum theory
+\end_layout
+
+\begin_layout Standard
+Another approach to determinate the armonic components of the inflow field
+ is given by Padfield in
+\begin_inset CommandInset citation
+LatexCommand cite
+key "bib:Pad"
+
+\end_inset
+
+,where apply the momentum balance to the one-per-rev components of the load
+ and inflow.
+ From them, expressions for the non-uniform inflow can be derived, leading
+ to a system of equations involving the inflow parameters 
+\begin_inset Formula $\lambda_{0}$
+\end_inset
+
+, 
+\begin_inset Formula $\lambda_{1C}$
+\end_inset
+
+ and 
+\begin_inset Formula $\lambda_{1S}$
+\end_inset
+
+; and the aerodynamic loads 
+\begin_inset Formula $C_{T}$
+\end_inset
+
+, 
+\begin_inset Formula $C_{M_{x_{A}}^{a}}$
+\end_inset
+
+ and 
+\begin_inset Formula $C_{M_{y_{A}}^{a}}$
+\end_inset
+
+.
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+If this options is chosen, instead of solving one equation to determinate
+ $
+\backslash
+lambda_0$ and using it to evaluate the armonic components, it is necessary
+ to solve the three equations system to obtain the induced velocity parameters.
+ It has disadvantages such as time of computation depending on the flight
+ condition complexity and should be evaluated if there is an improvement
+ on the results and if it is worth the mentioned increase of time.
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+As this model is based on the global momentum theory, its results can be
+ compared to the Glauert's one if only the uniform inflow is considered.
+ This comparison is shown in figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:error"
+
+\end_inset
+
+, in percentile form.
+\end_layout
+
+\begin_layout Standard
+\noindent
+\align center
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+fbox{
+\end_layout
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename figures/error.pdf
+	width 70text%
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:error"
+
+\end_inset
+
+Error between Glauert's uniform induced velocity and momentum theory forcing
+ 
+\begin_inset Formula $\lambda_{1C}=\lambda_{1S}=0$
+\end_inset
+
+, in different flight conditions
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+It can be observed that the differences remain in a low level 
+\begin_inset Formula $(<0,1\%)$
+\end_inset
+
+ until the flight condition is near to the singularity present in the Glauert's
+ model.
+ The sources of error are basically two: the numerical one, related to the
+ solver; and the one inherent to the model.
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The first one can be reduced by minimizing the tolerance of the numerical
+ solver, being careful to avoid large computation times without appreciated
+ error reductions.
+ The second one comes from the expansion of equation
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:lambda"
+
+\end_inset
+
+ done in order to integrate the equations of momentum balance.
+\end_layout
+
+\begin_layout Subsubsection
+Combination equations for the harmonic representation of the induced velocity
+\end_layout
+
+\begin_layout Standard
+The local momentum equals the thrust force corresponding to the blade element
+ at position 
+\begin_inset Formula $r,\psi$
+\end_inset
+
+ expressed by BET, to the balance of momentum flux corresponding to a differenti
+al area at the rotor disk 
+\begin_inset Formula $r\D r\D\psi$
+\end_inset
+
+.
+ The balance of local momentum flux is expressed as a differential version
+ of the momentum equation for uniform induced velocity.
+ This equality is expressed, for the case of Glauert model for induced velocity
+ 
+\begin_inset Formula \begin{equation}
+\dfrac{\D\psi}{2\pi}\left[\dfrac{1}{2}\rho caU_{T}\left(U_{T}\theta+U_{P}\right)\D r\right]=\dfrac{\D\psi}{b2\pi}\left\{ -2\rho\left(2\pi r\D r\right)\left(\Omega R\right)^{2}\lambda_{i}\left[\mu_{x_{P}}^{2}+\mu_{y_{P}}^{2}+\left(\mu_{z_{P}}+\text{\lambda}_{i}\right)^{2}\right]\right\} .\label{eq:Combination 01}\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In the equation 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:Combination 01"
+
+\end_inset
+
+ the wind velocities 
+\begin_inset Formula $\Omega R\left(\mu_{Wx_{A}}\bi_{A}+\mu_{Wy_{A}}\bj_{A}+\mu_{Wz_{A}}\bk_{A}\right)$
+\end_inset
+
+ must be also considered.
+ Additionally, the local velocities due to the angular velocity of A reference
+ system, 
+\begin_inset Formula $\mathbf{\omega}_{A}$
+\end_inset
+
+, expressed as 
+\begin_inset Formula $\mathrm{\mathbf{\omega}}_{A}\times r\mathrm{i}_{A1}$
+\end_inset
+
+ must be also considered.
+ Finally the equation 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:Combination 01"
+
+\end_inset
+
+ has to be expressed in terms of 
+\begin_inset Formula $\mathbf{\mu}_{A}$
+\end_inset
+
+.
+ After some manipulation, 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \begin{equation}
+\dfrac{1}{2}\left[\dfrac{1}{2}\sigma a\dfrac{U_{T}}{\Omega R}\left(\dfrac{U_{T}}{\Omega R}\theta+\dfrac{U_{P}}{\Omega R}\right)\D x\right]=\left\{ -2x\lambda_{i}\left[\mu_{x_{P}}^{2}+\mu_{y_{P}}^{2}+\left(\mu_{z_{P}}+\text{\lambda}_{i}\right)^{2}\right]\D x\right\} ,\label{eq:Combination 02}\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+with 
+\begin_inset Formula $\lambda_{i}$
+\end_inset
+
+ given by 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:lambda"
+
+\end_inset
+
+.
+ After integration of 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:Combination 02"
+
+\end_inset
+
+ in 
+\begin_inset Formula $x=[0,1]$
+\end_inset
+
+, the RHS can be written
+\begin_inset Formula \begin{equation}
+\dfrac{C_{T}}{2}+\dfrac{C_{T1C}}{2}\cos\psi+\dfrac{C_{T1S}}{2}\sin\psi,\label{eq:Combination 03}\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+and the LHS
+\begin_inset Formula \begin{equation}
+\Lambda_{0}+\Lambda_{1C}\cos\psi+\Lambda_{1S}\sin\psi,\label{eq:Combination 04}\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+where the terms 
+\begin_inset Formula $C_{T},\, C_{T1C},\, C_{T1S},\,\Lambda_{0},\,\Lambda_{1C}$
+\end_inset
+
+ and 
+\begin_inset Formula $\Lambda_{1S}$
+\end_inset
+
+ are fucntion, among others of 
+\begin_inset Formula $\lambda_{0},\,\lambda_{1C}$
+\end_inset
+
+ and 
+\begin_inset Formula $\lambda_{1S}$
+\end_inset
+
+.
+ In 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:Combination 03"
+
+\end_inset
+
+ and 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:Combination 04"
+
+\end_inset
+
+ the harmonics in 
+\begin_inset Formula $2\psi$
+\end_inset
+
+ and higher have been neglected.
+ The three combination equations that allow to obtain 
+\begin_inset Formula $\lambda_{0},\,\lambda_{1C}$
+\end_inset
+
+ and 
+\begin_inset Formula $\lambda_{1S}$
+\end_inset
+
+ are
+\begin_inset Formula \begin{eqnarray}
+\dfrac{C_{T}}{2}-\Lambda_{0} & = & 0,\nonumber \\
+\dfrac{C_{T1C}}{2}-\Lambda_{1C} & = & 0,\nonumber \\
+\dfrac{C_{T1S}}{2}-\Lambda_{1S} & = & 0.\label{eq:Combination 05}\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage clearpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "bib:red"
+
+\end_inset
+
+ Cuerva y otros.
+ 
+\emph on
+Teoría de los helicópteros
+\emph default
+.
+ IDR, 2009.
+ 
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "bib:Chen"
+
+\end_inset
+
+ Chen, R.
+ T.
+ 
+\emph on
+A survey of nonuniform models for rotorcraft flight dynamics and control
+ applications.
+
+\emph default
+ NASA TM 102209, 1989.
+ 
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "bib:Col"
+
+\end_inset
+
+ Coleman, P.
+ 
+\emph on
+Evaluation of the induced-velocity field of an idealized helicopter rotor
+\emph default
+.
+ NACA ARR L5E10, 1945.
+ 
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "bib:Bram"
+
+\end_inset
+
+ Bramwell, A.
+ R.
+ S.
+ & others.
+ 
+\emph on
+Bramwell's helicopter dynamics
+\emph default
+.
+ Butterworth-Heinemann, 2001.
+ 
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "bib:Pad"
+
+\end_inset
+
+ Padfield, G.
+ D.
+ 
+\emph on
+Helicopter flight dynamics
+\emph default
+.
+ Blackwell, 2007.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage clearpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+thispagestyle{empty}
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset Newpage clearpage
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

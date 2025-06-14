@@ -1,0 +1,329 @@
+#LyX 1.6.5 created this file. For more info see http://www.lyx.org/
+\lyxformat 345
+\begin_document
+\begin_header
+\textclass article
+\begin_preamble
+\input{../../comun/preamble_doc_nano.tex}
+
+\author{Álvaro Cuerva\\ Óscar López\\ Mariano Rubio}
+\foot{A. Cuerva, O. López, M. Rubio}
+\heading{HEROES inflow}
+\city{Madrid}
+\month{November}
+\year{2010}
+\end_preamble
+\use_default_options true
+\language english
+\inputencoding auto
+\font_roman lmodern
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+La ecuación de cantidad de movimiento en vuelo de avance es
+\begin_inset Formula \[
+\D T=2\rho v_{i}\sqrt{V_{x}^{2}+(V_{z}+v_{i})^{2}}\D S\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+de forma que la velocidad inducida resulta de la ecuación
+\begin_inset Formula \begin{equation}
+v_{i}=\dfrac{\dfrac{\D T}{\D S}}{2\sqrt{V_{x}^{2}+(V_{z}+v_{i})^{2}}}.\label{eq:velocidad inducida}\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Johnson establece que la mágnitud 
+\begin_inset Formula $\D T/\D S$
+\end_inset
+
+ tiene una componente asociada a la propia tracción, 
+\begin_inset Formula $T/S$
+\end_inset
+
+ y otro término asociado a la existencia de momento de balanceo y cabeceo
+ en ejes del rotor, 
+\begin_inset Formula $M_{x_{A}}$
+\end_inset
+
+ y 
+\begin_inset Formula $M_{y_{A}}$
+\end_inset
+
+.
+ 
+\begin_inset Formula \begin{equation}
+\dfrac{\D T}{\D S}=\dfrac{T}{S}+\dfrac{\D T_{M}}{\D S}.\label{eq:Traccion}\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Johnson asume que los momentos de cabeceo y balanceo estan originados por
+ una distribución de tracción específica 
+\begin_inset Formula $\D T_{M}$
+\end_inset
+
+ (cuya integral en el rotor es nula, y por tanto no contribuye a la tracción).
+ Johnson asume que la distribución de tracción que produce los momentos
+ es lineal y por tanto podemos escribir
+\begin_inset Formula \begin{equation}
+\dfrac{\D T_{M}}{\D S}=Ax_{A}+By_{A}=Ar\cos\psi+Br\sin\psi\label{eq:DTM}\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Los momentos de cabeceo y balanceo por unidad de superficie resultan
+\begin_inset Formula \begin{eqnarray}
+\dfrac{\D M_{x_{A}}}{\D S} & = & \dfrac{\D T_{M}}{\D S}r\sin\psi\nonumber \\
+\dfrac{\D M_{y_{A}}}{\D S} & =- & \dfrac{\D T_{M}}{\D S}r\cos\psi\label{eq:Momentos}\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Sustituyendo 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:DTM"
+
+\end_inset
+
+ en la ecuación 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:Momentos"
+
+\end_inset
+
+ resulta
+\begin_inset Formula \begin{eqnarray*}
+\dfrac{\D M_{x_{A}}}{\D S} & = & \left(Ar\cos\psi+Br\sin\psi\right)r\sin\psi\\
+\dfrac{\D M_{y_{A}}}{\D S} & = & -\left(Ar\cos\psi+Br\sin\psi\right)r\cos\psi\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Si se integran las relaciones anteriores sobre la superficie del rotor result
+\begin_inset Formula \begin{eqnarray*}
+M_{x_{A}} & =\int_{0}^{R}\int_{0}^{2\pi} & \left(Ar\cos\psi+Br\sin\psi\right)r\sin\psi r\D r\D\psi=\dfrac{BR^{4}}{4}\pi\\
+M_{y_{A}} & =-\int_{0}^{R}\int_{0}^{2\pi} & \left(Ar\cos\psi+Br\sin\psi\right)r\cos\psi r\D r\D\psi=-\dfrac{AR^{4}}{4}\pi\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+resultando
+\begin_inset Formula \begin{eqnarray*}
+B & = & \dfrac{4M_{x_{A}}}{\pi R^{4}},\\
+A & =- & \dfrac{4M_{y_{A}}}{\pi R^{4}},\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+y sustituyendo en 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:DTM"
+
+\end_inset
+
+
+\begin_inset Formula \[
+\dfrac{\D T_{M}}{\D S}=-\dfrac{4M_{yA}}{\pi R^{2}}r\cos\psi+\dfrac{4M_{xA}}{\pi R^{2}}r\sin\psi\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+de forma que la ecuación 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:Traccion"
+
+\end_inset
+
+ se puede escribir
+\begin_inset Formula \[
+\dfrac{\D T}{\D S}=\dfrac{T}{S}+-\dfrac{4M_{yA}}{\pi R^{2}}r\cos\psi+\dfrac{4M_{xA}}{\pi R^{2}}r\sin\psi.\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+y la ecuación de velocidad inducida 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:velocidad inducida"
+
+\end_inset
+
+ resulta
+\begin_inset Formula \[
+v_{i}=\left(\dfrac{T}{S}-\dfrac{4M_{yA}}{\pi R^{2}}r\cos\psi+\dfrac{4M_{xA}}{\pi R^{2}}r\sin\psi\right)\dfrac{1}{2\sqrt{V_{x}^{2}+(V_{z}+v_{i})^{2}}},\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+que en forma adimensional es
+\begin_inset Formula \begin{equation}
+\lambda_{i}=\dfrac{-\dfrac{C_{T}}{2}+2C_{M_{yA}}x\cos\psi-2C_{M_{xA}}x\sin\psi}{\sqrt{\mu_{x}^{2}+(\mu_{z}+\lambda_{i})^{2}}}.\label{eq:lambdai}\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Jonhson añade una simplificación adicional si 
+\begin_inset Formula $\mu_{x}$
+\end_inset
+
+ es grande al hacer 
+\begin_inset Formula $\mu_{x}^{2}\ll(\mu_{z}+\lambda_{i})^{2}$
+\end_inset
+
+ de forma que 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:lambdai"
+
+\end_inset
+
+ resulta
+\begin_inset Formula \[
+\lambda_{i}\cong-\dfrac{C_{T}}{2\left|\mu_{x}\right|}+\dfrac{2C_{M_{yA}}}{\left|\mu_{x}\right|}x\cos\psi-\dfrac{2C_{M_{xA}}}{\left|\mu_{x}\right|}x\sin\psi\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Con lo que nuestras ecuaciones de velocidad inducida son
+\begin_inset Formula \begin{eqnarray}
+\lambda_{0} & = & -\dfrac{C_{T}}{2\left|\mu_{x}\right|},\nonumber \\
+\lambda_{1C} & = & \dfrac{2C_{M_{yA}}}{\left|\mu_{x}\right|},\nonumber \\
+\lambda_{1S} & =- & \dfrac{2C_{M_{xA}}}{\left|\mu_{x}\right|}.\label{eq:simplificacion}\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Si no se considera 
+\begin_inset Formula $\mu_{x}^{2}\ll(\mu_{z}+\lambda_{i})^{2}$
+\end_inset
+
+ hay que proceder como hemos hecho nosotros, esto primero sustituir 
+\begin_inset Formula $\lambda_{i}=\lambda_{0}+\lambda_{1C}x\cos\psi+\lambda_{1S}x\sin\psi$
+\end_inset
+
+ en 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:lambdai"
+
+\end_inset
+
+
+\begin_inset Formula \begin{equation}
+\lambda_{0}+\lambda_{1C}x\cos\psi+\lambda_{1S}x\sin\psi=\dfrac{-\dfrac{C_{T}}{2}+2C_{M_{yA}}x\cos\psi-2C_{M_{xA}}x\sin\psi}{\sqrt{\mu_{x}^{2}+(\mu_{z}+\lambda_{0}+\lambda_{1C}x\cos\psi+\lambda_{1S}x\sin\psi)^{2}}}.\label{eq:completa}\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+desarrollar el RHS de 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:completa"
+
+\end_inset
+
+ en series de 
+\begin_inset Formula $x$
+\end_inset
+
+ para integrar en 
+\begin_inset Formula $x=0..1$
+\end_inset
+
+ y posteriormente obtener los términos constantes en 
+\begin_inset Formula $\cos\psi$
+\end_inset
+
+ y en 
+\begin_inset Formula $\sin\psi$
+\end_inset
+
+.
+\end_layout
+
+\end_body
+\end_document

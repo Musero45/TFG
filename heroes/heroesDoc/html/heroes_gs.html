@@ -1,0 +1,430 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>HEROES TOOLBOX</title><meta name="generator" content="MATLAB 7.14"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-03-31"><meta name="DC.source" content="heroes_gs.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, tt, code { font-size:12px; }
+pre { margin:0px 0px 20px; }
+pre.error { color:red; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+
+  </style></head><body><div class="content"><h1>HEROES TOOLBOX</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Getting Started Guide</a></li><li><a href="#2">Heroes toolbox description</a></li><li><a href="#3">Using the documentation</a></li><li><a href="#4">Defining helicopters</a></li><li><a href="#17">Analysing helicopter using the energy method</a></li><li><a href="#18">Computing helicopter performance from non-powered flight conditions</a></li><li><a href="#22">Computing powered power states</a></li><li><a href="#23">Analysing helicopter using the actions method</a></li></ul></div><h2>Getting Started Guide<a name="1"></a></h2><h2>Heroes toolbox description<a name="2"></a></h2><pre>Heroes toolbox is a matlab toolbox developed to simulate the flight
+mechanics of conventional helicopters and it has been developed by
+profesors and students of Escuela Tecnica Superior de Ingeniera
+Aeronautica y del Espacio from Universidad Politecnica de Madrid.</pre><pre>The key features of heroes are the following ones</pre><div><ul><li>Construct helicopter models</li><li>Analyse performance, missions, trim and stability of helicopters</li><li>Computer aid to design of helicopters</li></ul></div><h2>Using the documentation<a name="3"></a></h2><h2>Defining helicopters<a name="4"></a></h2><p>You can use heroes toolbox to define helicopter models based on two theoretical formulations. The following sort of helicopters can be defined:</p><div><ul><li>energy-based helicopters</li><li>actions-based helicopters</li></ul></div><p>Constructing an energy-based helicopter To define an energy-based helicopter, ehe, it is neccessary to define each of the subcomponents of helicopter, that is, main and tail rotors, fuselage, transmission and power plant.</p><p>Enter the following data to define the main rotor of an energy-based helicopter.</p><pre class="codeinput">R     = 5.6;
+Omega = 42.0;
+chord = 0.35;
+b     = 2;
+cd0   = 0.009;
+kappa = 1.1;
+K     = 4.5;
+</pre><p>where R is the rotor radius, Omega is the rotor angular speed, chord, the chord of the blade, b the number of blades, cd0 is an average drag coefficient, kappa the induced correction factor and K the profile and parasite correction factor. To construct the main rotor it should be used the eRotor function:</p><pre class="codeinput">mr    = eRotor(b,cd0,chord,Omega,R,K,kappa);
+</pre><p>To define a tail rotor it is enough to define the percentage of the main rotor power consumption that is required by the tail rotor. Then defining</p><pre class="codeinput">eta = 0.07;
+</pre><p>where eta is the percentage of the main rotor power consumption that is required by the tail rotor. To construct the tail rotor we use again eRotor function as follows</p><pre class="codeinput">tr    = eRotor(eta);
+</pre><p>Now to define the helicopter fuselage the flat plate equivalent area shold be input, that is</p><pre class="codeinput">f     = 1.2;
+</pre><p>To construct the energy-based fuselage we need to use the function eFuselage:</p><pre class="codeinput">flg   = eFuselage(f);
+</pre><p>To define the power plant and because the performance of the power plant is dependent on the flight altitude we need to define before a ISA atmosphere. To setup a international standard atmosphere we use the function getISA as follows</p><pre class="codeinput">atm   = getISA;
+</pre><p>and atm is an ISA atmosphere variable. The energy-based power plant should especify the following data</p><pre class="codeinput">PTOsl     = 375e3;
+PMCsl     = 360e3;
+PSFC      = 0.11e-6;
+npower    = 0.8;
+nEngines  = 1;
+</pre><p>where</p><pre class="codeinput">pp = ePowerPlant(PTOsl,PMCsl,PSFC,npower,nEngines,atm);
+</pre><p>The last component to be defined is the helicopter transmission.</p><pre class="codeinput">PMT       = 310e3;
+etaTmr    = 0.95;
+etaTtr    = 0.94;
+trn       = eTransmission(PMT,etaTmr,etaTtr);
+</pre><p>The Operating Empty Weight OEW, maximum take-off weight, MTOW, maximum pay load, MPL, and maximum fuel weight, MFW, should be especified by using the eWeight constructor. For instance, consider the following helicopter weights</p><pre class="codeinput">MTOW      = 20000;
+OEW       = 10500;
+MPL       = 4000;
+MFW       = 5000;
+</pre><p>and using the eWeight constructor an energy-based structure is setup</p><pre class="codeinput">we        = eWeight(MTOW,OEW,MPL,MFW);
+</pre><p>Finally to construct the energy-based helicopter we use the ehe constructor function.</p><pre class="codeinput">gshe      = ehe(mr,tr,flg,pp,trn,atm,we,<span class="string">'heroes-gs'</span>);
+
+
+<span class="comment">%</span>
+</pre><h2>Analysing helicopter using the energy method<a name="17"></a></h2><p>In this section, you learn how to analyze the performance of energy-based helicopter models using the energy method of determining performances.</p><p>Before you can perform the analysis, you must have already built in energy-based helicopter models in the MATLAB workspace. For information on how to create a model, see ??hypperlink required??.</p><p>In what follows, some energy-based functions are going to be presented in a study-case fashion. For a more detailed information about energy-based functions see ??hypperlink required??</p><p>Among others, one of the basic information the energy method can provide is the determination of the required power as a function of the forward speed and the flight altitude. Before using the energy-based functions an energy_based helicopter a flight conditions should be defined. Section ??hyperlink required?? presents how to construct energy-based helicopters. Flight conditions can be established using the corresponding constructors and depending on the kind of flight condition several constructors are used.</p><p>From a mathematical point of view the energy method deals with two basic problems: * power is unknown (powered flight conditions). This case corresponds to the basic energy problem. Performances based on this kind of problem are ceiling, velocity for maximum endurance, velocity for maximum range, etc. * power is known (powered flight condition). This case implies that power is imposed and other variable can be determined instead of power. Typical helicopter performances for given power are maximum velocity for given power, maximum rate of climb, autorotation performances such as flight path angle for minimum vertical velocity.</p><h2>Computing helicopter performance from non-powered flight conditions<a name="18"></a></h2><p>To compute the required power in watts of the helicopter previously defined as gshe at sea level with a forward speed between 50 km/h upto 200 km/h and gammaT equal to zero (level cruise flight condition) we can use the getEpowerState function.</p><p>Once atmosphere and helicopter are established, see previous section, flight condition should be defined. To define a flight condition the following operating variables should be especified:</p><div><ul><li>helicopter speed modulus V</li><li>altitude, H.</li><li>helicopter gross weight, W.</li><li>angular speed of rotor, Omega.</li><li>Fuel mass, Mf.</li><li>Height above ground, Z.</li><li>Helicopter required power, P.</li><li>gammaT.</li></ul></div><p>To define a level flight condition, gammaT=0, corresponding to a sea level altitude, H=0, with a gross weight of 10400 N, fuel mass of 400 kg, and rotor speed corresponding to nominal rotor speed, Omega=Omega_N, and 31 forward speeds between 5 km/h upto 200 km/h we can use the getFlightCondition constructor function as follows: first we define scalar values of the flight condition parameters to be used latter, and then we build up a vector of flight conditions using the flightCondition constructor by input vector values. Therefore, we define the scalar values of the flight condition</p><pre class="codeinput">GW      = 10400;
+Mf      = 400;
+hsl     = 0.0;
+OmegaN  = gshe.mainRotor.Omega;
+</pre><p>then we define the input vector for the flight condition and finally we use the getFlightCondition function.</p><pre class="codeinput">nv      = 31;
+v_i     = linspace(5,200,nv)'/3.6;
+hsl_i   = hsl*ones(nv,1);
+GW_i    = GW*ones(nv,1);
+Mf_i    = Mf*ones(nv,1);
+Omega_i = OmegaN*ones(nv,1);
+fc_i    = getFlightCondition(gshe,<span class="keyword">...</span>
+          <span class="string">'V'</span>,v_i,<span class="string">'H'</span>,hsl_i,<span class="string">'GW'</span>,GW_i,<span class="keyword">...</span>
+          <span class="string">'Omega'</span>,Omega_i,<span class="string">'Mf'</span>,Mf_i);
+</pre><p>The next example shows how to compute and plot the power curve of the helicopter for the previously defined flight condition. To get the power curve of the helicopter the function getEpowerState is used. As every energy function the sequence of input arguments is always helicopter, flight condition, atmosphere and possibly some options. The function getEpowerState transforms helicopter, flight condition and atmosphere into a power state data structure.</p><pre class="codeinput">ps_i    = getEpowerState(gshe,fc_i,atm);
+
+
+fc1     = getFlightCondition(gshe,<span class="keyword">...</span>
+          <span class="string">'V'</span>,NaN,<span class="string">'H'</span>,hsl,<span class="string">'GW'</span>,GW,<span class="keyword">...</span>
+          <span class="string">'Omega'</span>,Omega,<span class="string">'Mf'</span>,Mf);
+VA      = vMaxRange(gshe,fc1,atm);
+fcA     = getFlightCondition(gshe,<span class="keyword">...</span>
+          <span class="string">'V'</span>,VA,<span class="string">'H'</span>,hsl,<span class="string">'GW'</span>,GW,<span class="keyword">...</span>
+          <span class="string">'Omega'</span>,Omega,<span class="string">'Mf'</span>,Mf);
+psA     = getEpowerState(gshe,fcA,atm);
+
+VB      = vMaxEndurance(gshe,fc1,atm);
+fcB     = getFlightCondition(gshe,<span class="keyword">...</span>
+          <span class="string">'V'</span>,VB,<span class="string">'H'</span>,hsl,<span class="string">'GW'</span>,GW,<span class="keyword">...</span>
+          <span class="string">'Omega'</span>,Omega,<span class="string">'Mf'</span>,Mf);
+psB     = getEpowerState(gshe,fcB,atm);
+</pre><p>Heroes toolbox provides the function plotPowerState to plot power state data.</p><pre class="codeinput">axds    = getaxds(<span class="string">'Vh'</span>,<span class="string">'$V_H$ [km/h]'</span>,3.6);
+azds    = getaxds({<span class="string">'P'</span>},{<span class="string">'$P$ [kW]'</span>},1e-3);
+
+axps    = plotPowerState(ps_i,axds,[],<span class="string">'defaultVars'</span>,azds); hold <span class="string">on</span>;
+
+
+plotPowerState({ps_i,psA,psB},axds, <span class="keyword">...</span>
+{<span class="string">'power curve'</span>,<span class="string">'max range'</span>,<span class="string">'max endurance'</span>}, <span class="keyword">...</span>
+<span class="string">'defaultVars'</span>,azds,<span class="keyword">...</span>
+<span class="string">'mark'</span>,{<span class="string">'k-'</span>,<span class="string">'r s'</span>,<span class="string">'b o'</span>} <span class="keyword">...</span>
+);
+</pre><pre class="codeoutput">Error using figure
+Single input must be an existing figure handle or a scalar integer from 1 to 2147483646
+
+Error in plot2dStructure (line 61)
+figure(hgcf + 1)
+
+Error in plotStructureNdMatrix (line 55)
+          ax  = plot2dStructure(X,AXDS,zvars,options);
+
+Error in plotPowerState (line 61)
+ax = plotStructureNdMatrix(X,AXDS,AYDS,zvars,options);
+
+Error in heroes_gs (line 263)
+axps    = plotPowerState(ps_i,axds,[],'defaultVars',azds); hold on;
+</pre><h2>Computing powered power states<a name="22"></a></h2><h2>Analysing helicopter using the actions method<a name="23"></a></h2><p class="footer"><br>
+      Published with MATLAB&reg; 7.14<br></p></div><!--
+##### SOURCE BEGIN #####
+%% HEROES TOOLBOX
+%% Getting Started Guide
+% 
+%% Heroes toolbox description
+%
+%  Heroes toolbox is a matlab toolbox developed to simulate the flight
+%  mechanics of conventional helicopters and it has been developed by
+%  profesors and students of Escuela Tecnica Superior de Ingeniera
+%  Aeronautica y del Espacio from Universidad Politecnica de Madrid. 
+%
+%  The key features of heroes are the following ones
+%
+% 
+% * Construct helicopter models
+% * Analyse performance, missions, trim and stability of helicopters
+% * Computer aid to design of helicopters
+%
+%% Using the documentation
+% 
+%% Defining helicopters
+%
+% You can use heroes toolbox to define helicopter models based on two
+% theoretical formulations. The following sort of helicopters can be
+% defined:
+%
+% * energy-based helicopters
+% * actions-based helicopters
+%
+% Constructing an energy-based helicopter
+% To define an energy-based helicopter, ehe, it is neccessary to define
+% each of the subcomponents of helicopter, that is, main and tail rotors,
+% fuselage, transmission and power plant. 
+%
+% Enter the following data to define the main rotor of an energy-based
+% helicopter.
+
+
+R     = 5.6;
+Omega = 42.0;
+chord = 0.35;
+b     = 2;
+cd0   = 0.009;
+kappa = 1.1;
+K     = 4.5;
+
+%%
+% where R is the rotor radius, Omega is the rotor angular speed, chord, the
+% chord of the blade, b the number of blades, cd0 is an average drag 
+% coefficient, kappa the induced correction factor and K the profile and
+% parasite correction factor. To construct the main rotor it should be used
+% the eRotor function:
+
+mr    = eRotor(b,cd0,chord,Omega,R,K,kappa);
+
+%%
+% To define a tail rotor it is enough to define the percentage of the main
+% rotor power consumption that is required by the tail rotor. Then defining
+% 
+
+eta = 0.07;
+
+%%
+% where eta is the percentage of the main rotor power consumption that 
+% is required by the tail rotor. To construct the tail rotor we use again
+% eRotor function as follows
+
+tr    = eRotor(eta);
+
+
+%%
+% Now to define the helicopter fuselage the flat plate equivalent area
+% shold be input, that is
+
+f     = 1.2;
+
+%%
+% To construct the energy-based fuselage we need to use the function
+% eFuselage:
+
+flg   = eFuselage(f);
+
+
+%%
+% To define the power plant and because the performance of the power plant
+% is dependent on the flight altitude we need to define before a ISA
+% atmosphere. To setup a international standard atmosphere we use the
+% function getISA as follows
+
+atm   = getISA;
+
+%%
+% and atm is an ISA atmosphere variable. The energy-based power plant
+% should especify the following data
+
+PTOsl     = 375e3;
+PMCsl     = 360e3;
+PSFC      = 0.11e-6;
+npower    = 0.8;
+nEngines  = 1;
+
+%%
+% where
+
+pp = ePowerPlant(PTOsl,PMCsl,PSFC,npower,nEngines,atm);
+
+
+%%
+% The last component to be defined is the helicopter transmission. 
+
+PMT       = 310e3;
+etaTmr    = 0.95;
+etaTtr    = 0.94;
+trn       = eTransmission(PMT,etaTmr,etaTtr);
+
+%%
+% The Operating Empty Weight OEW, maximum take-off weight, MTOW, maximum
+% pay load, MPL, and maximum fuel weight, MFW, should be especified by using 
+% the eWeight constructor. For instance, consider the following helicopter
+% weights
+
+MTOW      = 20000;
+OEW       = 10500;
+MPL       = 4000;
+MFW       = 5000;
+
+%%
+% and using the eWeight constructor an energy-based structure is setup
+
+we        = eWeight(MTOW,OEW,MPL,MFW);
+
+%%
+% Finally to construct the energy-based helicopter we use the ehe
+% constructor function.
+
+
+gshe      = ehe(mr,tr,flg,pp,trn,atm,we,'heroes-gs');
+
+
+%
+%% Analysing helicopter using the energy method
+%
+%
+%
+% In this section, you learn how to analyze the performance of energy-based 
+% helicopter models using the energy method of determining performances. 
+%
+% Before you can perform the analysis, you must have already built in 
+% energy-based helicopter models in the MATLAB workspace. For information 
+% on how to create a model, see ??hypperlink required??.
+%
+% In what follows, some energy-based functions are going to be presented in
+% a study-case fashion. For a more detailed information about energy-based
+% functions see ??hypperlink required??
+%
+% Among others, one of the basic information the energy method can provide 
+% is the determination of the required power as a function of the 
+% forward speed and the flight altitude. Before using the energy-based
+% functions an energy_based helicopter a flight conditions should be
+% defined. Section ??hyperlink required?? presents how to construct
+% energy-based helicopters. Flight conditions can be established using the
+% corresponding constructors and depending on the kind of flight condition
+% several constructors are used. 
+%
+% From a mathematical point of view the energy method deals with 
+% two basic problems:
+% * power is unknown (powered flight conditions). This case corresponds to
+% the basic energy problem. Performances based on this kind of problem are
+% ceiling, velocity for maximum endurance, velocity for maximum range, etc.
+% * power is known (powered flight condition). This case implies that power
+% is imposed and other variable can be determined instead of power. Typical
+% helicopter performances for given power are maximum velocity for given
+% power, maximum rate of climb, autorotation performances such as flight 
+% path angle for minimum vertical velocity.
+%
+%% Computing helicopter performance from non-powered flight conditions
+%
+%
+% 
+% To compute the required power in watts of the helicopter previously
+% defined as gshe at sea level with a forward speed between 50 km/h upto 
+% 200 km/h and gammaT equal to zero (level cruise flight condition) we can 
+% use the getEpowerState function. 
+%
+% Once atmosphere and helicopter are established, see previous section, 
+% flight condition should be defined. To define a flight condition the
+% following operating variables should be especified:
+%
+% * helicopter speed modulus V
+% * altitude, H.
+% * helicopter gross weight, W.
+% * angular speed of rotor, Omega.
+% * Fuel mass, Mf.
+% * Height above ground, Z.
+% * Helicopter required power, P.
+% * gammaT.
+%
+%
+% To define a level flight condition, gammaT=0, corresponding to a sea level
+% altitude, H=0, with a gross weight of 10400 N, fuel mass of 400 kg, and
+% rotor speed corresponding to nominal rotor speed, Omega=Omega_N, and
+% 31 forward speeds between 5 km/h upto 200 km/h we can use the
+% getFlightCondition constructor function as follows: first we define
+% scalar values of the flight condition parameters to be used latter, and
+% then we build up a vector of flight conditions using the flightCondition
+% constructor by input vector values. Therefore, we define the scalar values of
+% the flight condition
+
+GW      = 10400;
+Mf      = 400;
+hsl     = 0.0;
+OmegaN  = gshe.mainRotor.Omega;
+
+
+%% 
+% then we define the input vector for the flight condition and finally we
+% use the getFlightCondition function.
+nv      = 31;
+v_i     = linspace(5,200,nv)'/3.6;
+hsl_i   = hsl*ones(nv,1);
+GW_i    = GW*ones(nv,1);
+Mf_i    = Mf*ones(nv,1);
+Omega_i = OmegaN*ones(nv,1);
+fc_i    = getFlightCondition(gshe,...
+          'V',v_i,'H',hsl_i,'GW',GW_i,...
+          'Omega',Omega_i,'Mf',Mf_i);
+
+
+%%
+% The next example shows how to compute and plot the power curve of the helicopter
+% for the previously defined flight condition. To get the power curve of
+% the helicopter the function getEpowerState is used. As every energy
+% function the sequence of input arguments is always helicopter, flight
+% condition, atmosphere and possibly some options. The function
+% getEpowerState transforms helicopter, flight condition and atmosphere
+% into a power state data structure. 
+%
+ps_i    = getEpowerState(gshe,fc_i,atm);
+
+
+fc1     = getFlightCondition(gshe,...
+          'V',NaN,'H',hsl,'GW',GW,...
+          'Omega',Omega,'Mf',Mf);
+VA      = vMaxRange(gshe,fc1,atm);
+fcA     = getFlightCondition(gshe,...
+          'V',VA,'H',hsl,'GW',GW,...
+          'Omega',Omega,'Mf',Mf);
+psA     = getEpowerState(gshe,fcA,atm);
+
+VB      = vMaxEndurance(gshe,fc1,atm);
+fcB     = getFlightCondition(gshe,...
+          'V',VB,'H',hsl,'GW',GW,...
+          'Omega',Omega,'Mf',Mf);
+psB     = getEpowerState(gshe,fcB,atm);
+
+
+
+%%
+% Heroes toolbox provides the function plotPowerState to plot power state 
+% data.
+axds    = getaxds('Vh','$V_H$ [km/h]',3.6);
+azds    = getaxds({'P'},{'$P$ [kW]'},1e-3);
+
+axps    = plotPowerState(ps_i,axds,[],'defaultVars',azds); hold on;
+
+
+plotPowerState({ps_i,psA,psB},axds, ...
+{'power curve','max range','max endurance'}, ...
+'defaultVars',azds,...
+'mark',{'k-','r s','b o'} ...
+);
+
+%% Computing powered power states
+
+
+%% Analysing helicopter using the actions method
+
+
+
+##### SOURCE END #####
+--></body></html>

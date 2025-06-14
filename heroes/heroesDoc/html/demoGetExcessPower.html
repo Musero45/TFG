@@ -1,0 +1,287 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>demoGetExcessPower</title><meta name="generator" content="MATLAB 7.14"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-03-31"><meta name="DC.source" content="demoGetExcessPower.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, tt, code { font-size:12px; }
+pre { margin:0px 0px 20px; }
+pre.error { color:red; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">How to Debug Flight Envelope</a></li><li><a href="#2">Description of the problem</a></li><li><a href="#3">Setup the example data</a></li></ul></div><h2>How to Debug Flight Envelope<a name="1"></a></h2><p>This demo show how to use getExcessPower to help debugging getFlightEnvelope</p><pre class="codeinput">clear <span class="string">all</span>
+close <span class="string">all</span>
+setPlot
+</pre><h2>Description of the problem<a name="2"></a></h2><p>Sometimes getFlightEnvelope breaks because it is not able to get maximum forward speed or get helicopter ceiling. Most of the times this is due to a bad combination of engine selection and required power. To understand what it is going on under the hook this demo shows how to use the function getExcessPower to view available and required power as function of altitude and forward speed.</p><h2>Setup the example data<a name="3"></a></h2><p>First, an ISA is loaded  a desreq and define an energy helicopter. Note that this design requirement produces an helicopter which is not able to hover because there is no enough power like getExcessPower shows.</p><pre class="codeinput">atm        = getISA;
+Z          = NaN;
+gammaT     = 0;
+nh         = 53;
+h          = linspace(0,10000,nh);
+nv         = 51;
+v          = linspace(0,100,nv);
+[V,H]      = ndgrid(v,h);
+
+
+
+numEngines = 2;
+engine     = Arriel2C2(atm,numEngines);
+
+dr         = kg4500DR;
+heli       = desreq2stathe(dr,engine);
+he         = stathe2ehe(atm,heli);
+
+GW         = 45000*ones(nv,nh);
+FM         = 975*ones(nv,nh);
+OmegaN     = he.mainRotor.Omega*ones(nv,nh);
+fc         = getFlightCondition(he,<span class="string">'V'</span>,V,<span class="string">'H'</span>,H);
+
+
+P          = getExcessPower(he,fc,atm);
+
+figure(1)
+[D,g] = contour(V,H,P); hold <span class="string">on</span>;
+set(g,<span class="string">'ShowText'</span>,<span class="string">'on'</span>);
+set(g,<span class="string">'LevelList'</span>,linspace(-1800000,1800000,11));
+colormap <span class="string">cool</span>
+
+
+<span class="comment">% % % % % % % % % % P          = getExcessPower(he,v,gammaT,h,Z,atm);</span>
+<span class="comment">% % % % % % % % % % [V,H]      = meshgrid(v,h);</span>
+<span class="comment">% % % % % % % % % % figure(1)</span>
+<span class="comment">% % % % % % % % % % [D,g] = contour(V,H,P);</span>
+<span class="comment">% % % % % % % % % % set(g,'ShowText','on');</span>
+<span class="comment">% % % % % % % % % % set(g,'LevelList',linspace(-5e5,5e5,11));</span>
+<span class="comment">% % % % % % % % % % colormap cool</span>
+</pre><img vspace="5" hspace="5" src="demoGetExcessPower_01.png" alt=""> <p>As it can be seen, there is a negative excess of power for hovering and maximum transmission power is constraining maximum continuous power map. Note that the excess power contour level of 0 is an approximation to the flight envelope of the helicopter. Now we skip the transmission power constraint to check if there is enough power at hover flight condition by setting the option constrainedEnginePower='no'</p><pre class="codeinput">P     = getExcessPower(he,fc,atm,<span class="string">'constrainedEnginePower'</span>,<span class="string">'no'</span>);
+figure(2)
+[D,g] = contour(V,H,P);
+set(g,<span class="string">'ShowText'</span>,<span class="string">'on'</span>);
+set(g,<span class="string">'LevelList'</span>,linspace(-5e5,5e5,11));
+colormap <span class="string">cool</span>
+</pre><img vspace="5" hspace="5" src="demoGetExcessPower_02.png" alt=""> <p>In order to understand what it is going on, we plot both the available power using plotHelicopterEnginePerformance and the required energy to hover at several altitudes using getP.</p><pre class="codeinput">plotHelicopterEnginePerformance(he,h);
+
+
+
+v_hover        = zeros(1,nh);
+fc_hover       = getFlightCondition(he,<span class="string">'V'</span>,v_hover,<span class="string">'H'</span>,h);
+
+
+Phover         = getP(he,fc_hover,atm);
+Peng           = he.availablePower.fPa_mc(h);
+figure(5); hold <span class="string">on</span>;
+plot(h,Phover,<span class="string">'r-'</span>);
+plot(h,Peng,<span class="string">'b--'</span>);
+legend({<span class="string">'Hover required power'</span>,<span class="string">'Hover available power'</span>},<span class="string">'Location'</span>,<span class="string">'Best'</span>)
+</pre><img vspace="5" hspace="5" src="demoGetExcessPower_03.png" alt=""> <img vspace="5" hspace="5" src="demoGetExcessPower_04.png" alt=""> <img vspace="5" hspace="5" src="demoGetExcessPower_05.png" alt=""> <p>As it can be seen, the two turboshafts provide a maximum continuous power at sea level about 1.3 MW, and the maximum transmission power which is about 0.97MW is constraining maximum continuous engine power map up to altitudes about 3100 meters. In figure 5 it can be seen that required power for hovering is higher than available power, and for this reason there is no positive excess power at hover. The hover required power at sea level is about 1 MW</p><p>In order to overcome the problem is enough to provide a higher value of maximum transmission power which is able to provide an available power for hovering higher thant the required power for hovering. Looking at figure 4 we can check that fixing maximum power transmission at about 1.1 MW we can have enough available power to hover. The way to set this is the next one</p><pre class="codeinput">Pmt                    = 1.1e6;
+fPmt                   = @(h) Pmt*ones(size(h));
+he.transmission.fPmt   = fPmt;
+he.transmission.Pmt    = Pmt;
+availablePower         = engine_transmission2availablePower(he.engine,he.transmission);
+he.availablePower      = availablePower;
+</pre><p>Now, we check that we have enough available power running the previous code but with the new maximum transmission power, that is:</p><pre class="codeinput">plotHelicopterEnginePerformance(he,h);
+Phover = getP(he,fc_hover,atm);
+Peng   = he.availablePower.fPa_mc(h);
+figure(8); hold <span class="string">on</span>;
+plot(h,Phover,<span class="string">'r-'</span>,h,Peng,<span class="string">'b--'</span>);
+legend({<span class="string">'Hover required power'</span>,<span class="string">'Hover available power'</span>},<span class="string">'Location'</span>,<span class="string">'Best'</span>)
+</pre><img vspace="5" hspace="5" src="demoGetExcessPower_06.png" alt=""> <img vspace="5" hspace="5" src="demoGetExcessPower_07.png" alt=""> <img vspace="5" hspace="5" src="demoGetExcessPower_08.png" alt=""> <p>Finally, we get the new excess power map.</p><pre class="codeinput">P     = getExcessPower(he,fc,atm,<span class="string">'constrainedEnginePower'</span>,<span class="string">'yes'</span>);
+figure(9)
+[D,g] = contour(V,H,P);
+set(g,<span class="string">'ShowText'</span>,<span class="string">'on'</span>);
+set(g,<span class="string">'LevelList'</span>,linspace(-5e5,5e5,11));
+colormap <span class="string">cool</span>
+</pre><img vspace="5" hspace="5" src="demoGetExcessPower_09.png" alt=""> <p class="footer"><br>
+      Published with MATLAB&reg; 7.14<br></p></div><!--
+##### SOURCE BEGIN #####
+%% How to Debug Flight Envelope
+% This demo show how to use getExcessPower to help debugging
+% getFlightEnvelope
+
+clear all
+close all
+setPlot
+
+
+%% Description of the problem 
+% Sometimes getFlightEnvelope breaks because it is not able to get maximum
+% forward speed or get helicopter ceiling. Most of the times this is due to
+% a bad combination of engine selection and required power. To understand
+% what it is going on under the hook this demo shows how to use the
+% function getExcessPower to view available and required power as function
+% of altitude and forward speed.
+
+
+%% Setup the example data
+% First, an ISA is loaded  a desreq and define an energy helicopter.
+% Note that this design requirement produces an helicopter which is not 
+% able to hover because there is no enough power like getExcessPower shows. 
+
+
+atm        = getISA;
+Z          = NaN;
+gammaT     = 0;
+nh         = 53;
+h          = linspace(0,10000,nh);
+nv         = 51;
+v          = linspace(0,100,nv);
+[V,H]      = ndgrid(v,h);
+
+
+
+numEngines = 2;
+engine     = Arriel2C2(atm,numEngines);
+
+dr         = kg4500DR;
+heli       = desreq2stathe(dr,engine);
+he         = stathe2ehe(atm,heli);
+
+GW         = 45000*ones(nv,nh);
+FM         = 975*ones(nv,nh);
+OmegaN     = he.mainRotor.Omega*ones(nv,nh);
+fc         = getFlightCondition(he,'V',V,'H',H);
+
+
+P          = getExcessPower(he,fc,atm);
+
+figure(1)
+[D,g] = contour(V,H,P); hold on;
+set(g,'ShowText','on');
+set(g,'LevelList',linspace(-1800000,1800000,11));
+colormap cool
+
+
+% % % % % % % % % % P          = getExcessPower(he,v,gammaT,h,Z,atm);
+% % % % % % % % % % [V,H]      = meshgrid(v,h);
+% % % % % % % % % % figure(1)
+% % % % % % % % % % [D,g] = contour(V,H,P);
+% % % % % % % % % % set(g,'ShowText','on');
+% % % % % % % % % % set(g,'LevelList',linspace(-5e5,5e5,11));
+% % % % % % % % % % colormap cool
+
+%%
+% As it can be seen, there is a negative excess of power for hovering and
+% maximum transmission power is constraining maximum continuous power map.
+% Note that the excess power contour level of 0 is an approximation to the 
+% flight envelope of the helicopter. Now we skip the transmission 
+% power constraint to check if there is enough power at hover flight 
+% condition by setting the option constrainedEnginePower='no'
+%
+P     = getExcessPower(he,fc,atm,'constrainedEnginePower','no');
+figure(2)
+[D,g] = contour(V,H,P);
+set(g,'ShowText','on');
+set(g,'LevelList',linspace(-5e5,5e5,11));
+colormap cool
+
+%%
+% In order to understand what it is going on, we plot both the available
+% power using plotHelicopterEnginePerformance and the required energy to
+% hover at several altitudes using getP.
+%
+plotHelicopterEnginePerformance(he,h);
+
+
+
+v_hover        = zeros(1,nh);
+fc_hover       = getFlightCondition(he,'V',v_hover,'H',h);
+
+
+Phover         = getP(he,fc_hover,atm);
+Peng           = he.availablePower.fPa_mc(h);
+figure(5); hold on;
+plot(h,Phover,'r-'); 
+plot(h,Peng,'bREPLACE_WITH_DASH_DASH');
+legend({'Hover required power','Hover available power'},'Location','Best')
+
+%%
+% As it can be seen, the two turboshafts provide a maximum continuous 
+% power at sea level about 1.3 MW, and the maximum transmission power which 
+% is about 0.97MW is constraining maximum continuous engine power map up 
+% to altitudes about 3100 meters. In figure 5 it can be seen that required
+% power for hovering is higher than available power, and for this reason
+% there is no positive excess power at hover. The hover required power at
+% sea level is about 1 MW
+%
+% In order to overcome the problem is enough to provide a higher value of
+% maximum transmission power which is able to provide an available 
+% power for hovering higher thant the required power for hovering. Looking 
+% at figure 4 we can check that fixing maximum power transmission at about
+% 1.1 MW we can have enough available power to hover. The way to set this
+% is the next one
+%
+Pmt                    = 1.1e6;
+fPmt                   = @(h) Pmt*ones(size(h));
+he.transmission.fPmt   = fPmt;
+he.transmission.Pmt    = Pmt;
+availablePower         = engine_transmission2availablePower(he.engine,he.transmission);
+he.availablePower      = availablePower;
+
+%%
+% Now, we check that we have enough available power running the previous 
+% code but with the new maximum transmission power, that is:
+%
+plotHelicopterEnginePerformance(he,h);
+Phover = getP(he,fc_hover,atm);
+Peng   = he.availablePower.fPa_mc(h);
+figure(8); hold on;
+plot(h,Phover,'r-',h,Peng,'bREPLACE_WITH_DASH_DASH');
+legend({'Hover required power','Hover available power'},'Location','Best')
+
+%%
+% Finally, we get the new excess power map.
+%
+P     = getExcessPower(he,fc,atm,'constrainedEnginePower','yes');
+figure(9)
+[D,g] = contour(V,H,P);
+set(g,'ShowText','on');
+set(g,'LevelList',linspace(-5e5,5e5,11));
+colormap cool
+
+##### SOURCE END #####
+--></body></html>

@@ -1,0 +1,351 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>demoParameterEnergyAnalysis</title><meta name="generator" content="MATLAB 7.14"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-03-31"><meta name="DC.source" content="demoParameterEnergyAnalysis.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, tt, code { font-size:12px; }
+pre { margin:0px 0px 20px; }
+pre.error { color:red; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">Parameter analysis of energy helicopters</a></li><li><a href="#2">Helicopter parameter variation for a scalar flight condition (hover)</a></li><li><a href="#8">Helicopter parameter variation for a vector of flight conditions</a></li><li><a href="#13">Helicopter bi-parameter variation for a scalar of flight conditions</a></li><li><a href="#17">References</a></li></ul></div><h2>Parameter analysis of energy helicopters<a name="1"></a></h2><p>This demo shows how to use energy functions in order to understand how to analyse helicopter design parameters and their potential impact on the aircraft performance. The main goal of this demo is to show how to consider variation of helicopter parameters and how to analyse the influence of the parameter variation on the helicopter performance.</p><p>One important remark is that because human beings we are able to visualize at most functions which depends on two variables at the momento of writing this notes heroes toolbox allows for determination of function of at most two variables.</p><p>Another heroes implicit rule is that despite the fact heroes energy functions in general can compute n-dimensional parameter variations, in a cartesian product sense, plot functions can only handle two variables dependencies.</p><pre class="codeinput">close <span class="string">all</span>
+setPlot;
+</pre><h2>Helicopter parameter variation for a scalar flight condition (hover)<a name="2"></a></h2><p>First we setup heroes environment by defining an ISA+0 atmosphere, a SuperPuma helicopter and a hover condition at sea level with gross weight of MTOW and fuel mass corresponding to the aircraft maximum fuel mass. Flight codition fc is also called a scalar flight condition in the sense that we are defining just one flight condition.</p><pre class="codeinput">atm        = getISA;
+he         = superPuma(atm);
+fc         = getFlightCondition(he);
+</pre><p>The next step is to input a variation of a helicopter parameter. The most direct way to do this is to define a cell of helicopters by transforming a reference helicopter by changing the desired parameter. For instance, let us consider we want to analyse how the variation of the induced power correction factor changes the required power for hovering. Then, we build up a cell of SuperPuma energy helicopters by varying the main rotor induced power correction factor kappa between 1.0 and 1.2 using the function getParametricCellHe. The function getParametricCellHe creates a cell of helicopters given a reference helicopter, a vector of parameter to be assigned to a valid field name of the reference helicopter. In this example a parametric variation of the reference helicopter is created by varying the induced power correction factor between 1.0 and 1.2 while keeping constant the rest of the helicopter parameters. First we define the induced power correction factor vector, then we define the parameter string which should be a valid  fieldname, including dots in case of a substructure field and then we use getParametricCellHe. The variable hei stores a cell of 11 helicopters.</p><pre class="codeinput">kappai     = linspace(1.0,1.2,11);
+parstr     = <span class="string">'mainRotor.kappa'</span>;
+hei        = getParametricCellHe(he,parstr,kappai);
+</pre><p>Next, we compute the power state corresponding to the hover condition which is a scalar one, and to the cell of parametric helicopters, which is a vector one. getEpowerState produces a structure with vector fields with size equal to the size of the parametric helicopters.</p><pre class="codeinput">ps         = getEpowerState(hei,fc,atm);
+</pre><p>If we try to plot directly such a power state using plotPowerState we can find that the relevant variable which is the induced power correction factor it does not belong to the power state so there is no information of the helicopter at the power state level. However, we can push plotPowerState to try to plot the power state ps by representing power as a function of the, let us say, forward velocity which is for every power state obviously zero. As it can be expected a vertical line of points is plot because forward velocity is constant and equal to zero and power is varying because of the induced power correction factor variation. The lower circle mark corresponds to the lower value of induced power correction factor and the upper down triangle represents the higher value of induced power correction factor.</p><pre class="codeinput">axds       = getaxds(<span class="string">'Vh'</span>,<span class="string">'$V_h$ [m/s]'</span>,1);
+azds       = getaxds({<span class="string">'P'</span>},{<span class="string">'$P$ [W]'</span>},1);
+plotPowerState(ps,axds,[],<span class="string">'defaultVars'</span>,azds);
+</pre><img vspace="5" hspace="5" src="demoParameterEnergyAnalysis_01.png" alt=""> <p>We would like to represent the required power for hovering as a function of the induced power correction factor but the power state structure does not know anything about the parameter variation undergo by the helicopter. In order to overcome such a deficiency we should add in some way the helicopter parameter information to the power state structure.</p><p>The function coswmf_cos2swmf transforms the power state cell of structures with matrix fields, ps, and the helicopter cell of structures, to a single structure with matrix fields ready to be used by plotPowerState by adding the parameter data stored in the field name defined by the parameter string, including dots, 'mainRotor.kappa'. Basically coswmf_cos2swmf performs two actions: * transforms a COSWMF (Cell Of Structures With Matrix Fields), i.e. the variable ps, and COS (Cell Of Structures), i.e. the variable hei, into a SWMF (Structure With Matrix Fields), i.e. ppw, which can be used by plotPowerState. * adds the helicopter parameter variation defined by the string parstr to the resulting SWMF, pps, as an additional field of the power state structure</p><pre class="codeinput">pps        = coswmf_cos2swmf(ps,hei,parstr);
+</pre><p>The variable pps is a power state structure in which each fieldname is a vector of size the size of the induced power correction factor, that is a row vector of size 1x11, because flight condition is scalar, hover, and helicopter is a vector of size the size of the induced power correction factor.  Furthermore, pps is not an actual power state because pps contains an additional fieldname which is the name of fieldname especified as input of coswmf_cos2swmf, that is pps contains a fieldname pps.kappa with a row vector of size 1x11 which is extracted from the cell of helicopters hei by collecting the values of the field 'mainRotor.kappa'. After transforming the cell of structures with matrix fields, ps, to the structure with matrix fields, pps, plotPowerState can be used to plot in a meaningful way, the helicopter parameter variation. As it can be seen the required power increases with the value of the induced power correction factor in a linear way.</p><pre class="codeinput">axds       = getaxds(<span class="string">'kappa'</span>,<span class="string">'$\kappa$ [-]'</span>,1);
+axps       = plotPowerState(pps,axds,[],<span class="string">'defaultVars'</span>,azds);
+</pre><img vspace="5" hspace="5" src="demoParameterEnergyAnalysis_02.png" alt=""> <h2>Helicopter parameter variation for a vector of flight conditions<a name="8"></a></h2><p>A vector of flight conditions is just a flight condition structure in which each field of the structure is a vector of real values. In this section we are going to compute the required power for hovering as a function of the altitude and induced power correction factor</p><p>The first step is to define a vector of hovering flight conditions at different altitudes. Let us consider a vector of flight conditions, fci, by varying the altitudes between sea level and 1000 meters.</p><pre class="codeinput">H          = linspace(0,1000,31);
+fci        = getFlightCondition(he,<span class="string">'H'</span>,H);
+</pre><p>Now using the previously defined cell of helicopters in which a parametric variation of induced power correction factor has been carried out we can compute the corresponding power state, ppsi, which represents a power state function of the two variables, that is, function of altitude and induced power correction factor. As before, getPowerState returns a cell of power state structures of size the same size then the helicopter input argument, that is a cell row vector of size 1x11. However, each slot of the output cell contains a power state structure with fields containing a row vector of size 1x31 which represents the variation of the power state with respect to the flight altitude</p><pre class="codeinput">ppsi       = getEpowerState(hei,fci,atm);
+</pre><p>Once again, the ppsi power state does not have any information about the induced power correction factor variation. Therefore we should add it using the function coswmf_cos2swmf as before. Now, the resulting power state structure ppsij is a structure with fieldnames containing matrices of size</p><pre class="codeinput">ppsij      = coswmf_cos2swmf(ppsi,hei,parstr);
+</pre><p>Then, using the previously defined x and z axis we should add a new y axis by defining the y variable as the altitude</p><pre class="codeinput">ayds       = getaxds(<span class="string">'H'</span>,<span class="string">'$H$ [-]'</span>,1);
+</pre><p>Once the cell of structures with matrix fields, ppsi, has been transformed to the structure with matrix fields, ppsij, plotPowerState can be used to plot in a meaningful way, the helicopter parameter variation. Now and because the power state depends on two variables we can use the 3D representation feature of heroes plot functions which by default features contour plots and the parametric plot3dMode which represents the power state variable, required power, as a function of altitude being the induced power correction factor id the parameter</p><pre class="codeinput">plotPowerState(ppsij,axds,ayds,<span class="string">'defaultVars'</span>,azds);
+plotPowerState(ppsij,ayds,axds,<span class="keyword">...</span>
+               <span class="string">'defaultVars'</span>,azds,<span class="keyword">...</span>
+               <span class="string">'plot3dMode'</span>,<span class="string">'parametric'</span> <span class="keyword">...</span>
+              );
+</pre><img vspace="5" hspace="5" src="demoParameterEnergyAnalysis_03.png" alt=""> <img vspace="5" hspace="5" src="demoParameterEnergyAnalysis_04.png" alt=""> <h2>Helicopter bi-parameter variation for a scalar of flight conditions<a name="13"></a></h2><p>In this section we are going to plot for a hover flight condition the required power as a function of the induced power correction factor and the average drag coefficient. These two variables are helicopter parameters and therefore, a cell array of helicopter should be created by the getParametricCellHe function.</p><p>First, we define the parameter string to find the corresponding fieldname and the values of average drag coefficients</p><pre class="codeinput">cd0j       = linspace(0.01,0.03,5);
+parstr2    = <span class="string">'mainRotor.cd0'</span>;
+</pre><p>Then, getParametricCellHe allows for a second pair of parameter string and parameter vector of parameter values just in order to build up a cell array of size 11x5</p><pre class="codeinput">heij       = getParametricCellHe(he,parstr,kappai,parstr2,cd0j);
+</pre><p>Now we are ready to compute the power state for the cell array of helicopters, heij, and the scalar flight condition at sea level, fc. The resulting power state psij is a cell array of size 11x5 which each slot of the cell array contains an scalar value.</p><pre class="codeinput">psij       = getEpowerState(heij,fc,atm);
+</pre><p>Before plotting the bidimensional cell array we are asked for adding to the cell array of scalar power states the bi-parameter variation information. Once again function coswmf_cos2swmf adds such information by especifying both parameter strings, i.e. 'mainRotor.kappa' and 'mainRotor.cd0'. Therefore we transform the cell array of scalar power states, psij, into a structure with 2d-matrices fields, pcsij. As it is expected each field of the structure pcsij contains a matrix of size 11x5 elements.</p><pre class="codeinput">pcsij      = coswmf_cos2swmf(psij,heij,parstr,heij,parstr2);
+
+
+ayds        = getaxds(<span class="string">'cd0'</span>,<span class="string">'$c_{d0}$ [-]'</span>,1);
+plotPowerState(pcsij,axds,ayds,<span class="keyword">...</span>
+               <span class="string">'plot3dMethod'</span>,@surfc,<span class="keyword">...</span>
+               <span class="string">'defaultVars'</span>,azds <span class="keyword">...</span>
+              );
+
+plotPowerState(pcsij,ayds,axds,<span class="keyword">...</span>
+               <span class="string">'defaultVars'</span>,azds,<span class="keyword">...</span>
+               <span class="string">'plot3dMode'</span>,<span class="string">'parametric'</span> <span class="keyword">...</span>
+              );
+</pre><img vspace="5" hspace="5" src="demoParameterEnergyAnalysis_05.png" alt=""> <img vspace="5" hspace="5" src="demoParameterEnergyAnalysis_06.png" alt=""> <h2>References<a name="17"></a></h2><p>[1] Alvaro Cuerva Tejero, Jose Luis Espino Granado, Oscar Lopez Garcia, Jose Meseguer Ruiz, and Angel Sanz Andres. Teoria de los Helicopteros. Serie de Ingenieria y Tecnologia Aeroespacial. Universidad Politecnica de Madrid, 2008.</p><p>DEVELOPMENT NOTES</p><p>The following part of code is an attempt to show a trick to easily plot. This should be reworked and if we come up with a solution put after line 68.</p><p>In order to overcome this difficulty we can use the following quick hack. We can overload the power state structure by adding a new field with the induced power correction factor information and using plotPowerState. psk        = ps; psk.kappa  = kappai; axds       = getaxds('kappa','$\kappa$ [-]',1); axpsk      = plotPowerState(psk,axds,[],'defaultVars',azds);</p><p class="footer"><br>
+      Published with MATLAB&reg; 7.14<br></p></div><!--
+##### SOURCE BEGIN #####
+%% Parameter analysis of energy helicopters
+% This demo shows how to use energy functions in order to understand 
+% how to analyse helicopter design parameters and their potential 
+% impact on the aircraft performance. The main goal of this demo is to show
+% how to consider variation of helicopter parameters and how to analyse
+% the influence of the parameter variation on the helicopter performance.
+%
+% One important remark is that because human beings we are able to
+% visualize at most functions which depends on two variables at the momento
+% of writing this notes heroes toolbox allows for determination of function
+% of at most two variables. 
+%
+% Another heroes implicit rule is that despite the fact heroes energy 
+% functions in general can compute n-dimensional parameter variations, in a
+% cartesian product sense, plot functions can only handle two variables 
+% dependencies.
+close all
+setPlot;
+
+%% Helicopter parameter variation for a scalar flight condition (hover)
+% First we setup heroes environment by defining an ISA+0 atmosphere,  
+% a SuperPuma helicopter and a hover condition at sea level with gross
+% weight of MTOW and fuel mass corresponding to the aircraft maximum 
+% fuel mass. Flight codition fc is also called a scalar flight condition 
+% in the sense that we are defining just one flight condition.
+atm        = getISA;
+he         = superPuma(atm);
+fc         = getFlightCondition(he);
+
+%% 
+% The next step is to input a variation of a helicopter parameter. The most
+% direct way to do this is to define a cell of helicopters by transforming
+% a reference helicopter by changing the desired parameter. For instance, 
+% let us consider we want to analyse how the variation of the induced 
+% power correction factor changes the required power for hovering. Then, 
+% we build up a cell of SuperPuma energy helicopters by varying the
+% main rotor induced power correction factor kappa between 1.0 and 1.2
+% using the function getParametricCellHe. The function getParametricCellHe
+% creates a cell of helicopters given a reference helicopter, a vector
+% of parameter to be assigned to a valid field name of the reference
+% helicopter. In this example a parametric variation of the reference 
+% helicopter is created by varying the induced power correction factor
+% between 1.0 and 1.2 while keeping constant the rest of the 
+% helicopter parameters. First we define the induced power correction 
+% factor vector, then we define the parameter string which should 
+% be a valid  fieldname, including dots in case of a substructure field and 
+% then we use getParametricCellHe. The variable hei stores a cell of 11 
+% helicopters.
+
+kappai     = linspace(1.0,1.2,11);
+parstr     = 'mainRotor.kappa';
+hei        = getParametricCellHe(he,parstr,kappai);
+
+
+%%
+% Next, we compute the power state corresponding to the hover condition 
+% which is a scalar one, and to the cell of parametric helicopters, which
+% is a vector one. getEpowerState produces a structure with vector fields
+% with size equal to the size of the parametric helicopters. 
+ps         = getEpowerState(hei,fc,atm);
+
+%%
+% If we try to plot directly such a power state using plotPowerState we can
+% find that the relevant variable which is the induced power correction 
+% factor it does not belong to the power state so there is no information
+% of the helicopter at the power state level. However, we can push
+% plotPowerState to try to plot the power state ps by representing power as
+% a function of the, let us say, forward velocity which is for every power
+% state obviously zero. As it can be expected a vertical line of points 
+% is plot because forward velocity is constant and equal to zero and power
+% is varying because of the induced power correction factor variation. The
+% lower circle mark corresponds to the lower value of induced power 
+% correction factor and the upper down triangle represents the higher value
+% of induced power correction factor.
+axds       = getaxds('Vh','$V_h$ [m/s]',1);
+azds       = getaxds({'P'},{'$P$ [W]'},1);
+plotPowerState(ps,axds,[],'defaultVars',azds);
+
+%%
+% We would like to represent the required power for hovering as a function
+% of the induced power correction factor but the power state structure does
+% not know anything about the parameter variation undergo by the
+% helicopter. In order to overcome such a deficiency we should add in some 
+% way the helicopter parameter information to the power state structure. 
+%
+% The function coswmf_cos2swmf transforms the power state cell of 
+% structures with matrix fields, ps, and the helicopter cell of structures, 
+% to a single structure with matrix fields ready to be used by 
+% plotPowerState by adding the parameter data stored in the field name 
+% defined by the parameter string, including dots, 'mainRotor.kappa'.
+% Basically coswmf_cos2swmf performs two actions:
+% * transforms a COSWMF (Cell Of Structures With Matrix Fields), i.e. the
+% variable ps, and COS (Cell Of Structures), i.e. the variable hei, into a
+% SWMF (Structure With Matrix Fields), i.e. ppw, which can be used by
+% plotPowerState.
+% * adds the helicopter parameter variation defined by the string parstr to
+% the resulting SWMF, pps, as an additional field of the power state
+% structure
+pps        = coswmf_cos2swmf(ps,hei,parstr);
+
+%%
+% The variable pps is a power state structure in which each fieldname is a
+% vector of size the size of the induced power correction factor, that 
+% is a row vector of size 1x11, because flight condition is scalar, hover, 
+% and helicopter is a vector of size the size of the induced power 
+% correction factor.  Furthermore, pps is not an actual power state 
+% because pps contains an additional fieldname which is the name of 
+% fieldname especified as input of coswmf_cos2swmf, that is pps contains a
+% fieldname pps.kappa with a row vector of size 1x11 which is extracted
+% from the cell of helicopters hei by collecting the values of the field
+% 'mainRotor.kappa'. After transforming the cell of structures with matrix 
+% fields, ps, to the structure with matrix fields, pps, plotPowerState 
+% can be used to plot in a meaningful way, the helicopter parameter 
+% variation. As it can be seen the required power increases with the 
+% value of the induced power correction factor in a linear way.
+axds       = getaxds('kappa','$\kappa$ [-]',1);
+axps       = plotPowerState(pps,axds,[],'defaultVars',azds);
+
+%% Helicopter parameter variation for a vector of flight conditions
+% A vector of flight conditions is just a flight condition structure
+% in which each field of the structure is a vector of real values. In this
+% section we are going to compute the required power for hovering 
+% as a function of the altitude and induced power correction factor
+%
+% The first step is to define a vector of hovering flight conditions at
+% different altitudes. Let us consider a vector of flight conditions, fci,
+% by varying the altitudes between sea level and 1000 meters.
+H          = linspace(0,1000,31);
+fci        = getFlightCondition(he,'H',H);
+
+
+%%
+% Now using the previously defined cell of helicopters in which a
+% parametric variation of induced power correction factor has been carried
+% out we can compute the corresponding power state, ppsi, which represents
+% a power state function of the two variables, that is, function of
+% altitude and induced power correction factor. As before, getPowerState
+% returns a cell of power state structures of size the same size then 
+% the helicopter input argument, that is a cell row vector of size 1x11.
+% However, each slot of the output cell contains a power state structure 
+% with fields containing a row vector of size 1x31 which represents the
+% variation of the power state with respect to the flight altitude
+%
+ppsi       = getEpowerState(hei,fci,atm);
+
+%%
+% Once again, the ppsi power state does not have any information about the 
+% induced power correction factor variation. Therefore we should add it
+% using the function coswmf_cos2swmf as before. Now, the resulting power
+% state structure ppsij is a structure with fieldnames containing matrices
+% of size 
+ppsij      = coswmf_cos2swmf(ppsi,hei,parstr);
+
+%%
+% Then, using the previously defined x and z axis we should add a new y
+% axis by defining the y variable as the altitude
+ayds       = getaxds('H','$H$ [-]',1);
+
+%%
+% Once the cell of structures with matrix fields, ppsi, has been 
+% transformed to the structure with matrix fields, ppsij, plotPowerState 
+% can be used to plot in a meaningful way, the helicopter parameter 
+% variation. Now and because the power state depends on two variables we can
+% use the 3D representation feature of heroes plot functions which by
+% default features contour plots and the parametric plot3dMode which
+% represents the power state variable, required power, as a function of
+% altitude being the induced power correction factor id the parameter
+plotPowerState(ppsij,axds,ayds,'defaultVars',azds);
+plotPowerState(ppsij,ayds,axds,...
+               'defaultVars',azds,...
+               'plot3dMode','parametric' ...
+              );
+
+%% Helicopter bi-parameter variation for a scalar of flight conditions
+% In this section we are going to plot for a hover flight condition 
+% the required power as a function of the induced power correction factor 
+% and the average drag coefficient. These two variables are helicopter 
+% parameters and therefore, a cell array of helicopter should be created by
+% the getParametricCellHe function.
+%
+% First, we define the parameter string to find the corresponding
+% fieldname and the values of average drag coefficients
+cd0j       = linspace(0.01,0.03,5);
+parstr2    = 'mainRotor.cd0';
+
+%%
+% Then, getParametricCellHe allows for a second pair of parameter string
+% and parameter vector of parameter values just in order to build up a
+% cell array of size 11x5
+heij       = getParametricCellHe(he,parstr,kappai,parstr2,cd0j);
+
+%%
+% Now we are ready to compute the power state for the cell array of
+% helicopters, heij, and the scalar flight condition at sea level, fc. The
+% resulting power state psij is a cell array of size 11x5 which each slot
+% of the cell array contains an scalar value.
+psij       = getEpowerState(heij,fc,atm);
+
+
+%%
+% Before plotting the bidimensional cell array we are asked for adding to
+% the cell array of scalar power states the bi-parameter variation
+% information. Once again function coswmf_cos2swmf adds such information by
+% especifying both parameter strings, i.e. 'mainRotor.kappa' and 
+% 'mainRotor.cd0'. Therefore we transform the cell array of scalar power
+% states, psij, into a structure with 2d-matrices fields, pcsij. As it is
+% expected each field of the structure pcsij contains a matrix of size 11x5
+% elements.
+pcsij      = coswmf_cos2swmf(psij,heij,parstr,heij,parstr2);
+
+
+ayds        = getaxds('cd0','$c_{d0}$ [-]',1);
+plotPowerState(pcsij,axds,ayds,...
+               'plot3dMethod',@surfc,...
+               'defaultVars',azds ...
+              );
+
+plotPowerState(pcsij,ayds,axds,...
+               'defaultVars',azds,...
+               'plot3dMode','parametric' ...
+              );
+
+
+%% References
+%
+% [1] Alvaro Cuerva Tejero, Jose Luis Espino Granado, Oscar Lopez Garcia,
+% Jose Meseguer Ruiz, and Angel Sanz Andres. Teoria de los Helicopteros.
+% Serie de Ingenieria y Tecnologia Aeroespacial. Universidad Politecnica
+% de Madrid, 2008.
+%
+% DEVELOPMENT NOTES
+%
+% The following part of code is an attempt to show a trick to easily plot. 
+% This should be reworked and if we come up with a solution put 
+% after line 68.
+%
+% In order to overcome this difficulty we can use the following quick hack. 
+% We can overload the power state structure by adding a new field 
+% with the induced power correction factor information and using 
+% plotPowerState.
+% psk        = ps;
+% psk.kappa  = kappai;
+% axds       = getaxds('kappa','$\kappa$ [-]',1);
+% axpsk      = plotPowerState(psk,axds,[],'defaultVars',azds);
+
+
+
+##### SOURCE END #####
+--></body></html>
